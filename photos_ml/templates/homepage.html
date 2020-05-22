@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    {% for id in ids %}
+        <a href="/photos/query/?id={{ id }}&k=30">
+            <img src="/photos/media/?id={{ id }}" width=500 height=500 />
+        </a>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Query</title>
+</head>
+<body>
+    <img src="/photos/media/?id={{ main_photo_id }}" width=500 height=500 /><hr>
+    {% for photo in photos %}
+        <a href="/photos/query/?id={{ photo.i }}&k={{ k }}">
+            <img src="/photos/media/?id={{ photo.i }}" alt="ID={{photo.i}}, D={{photo.d}}" width=300 height=300 />
+        </a>
+    {% endfor %}
+</body>
+</html>

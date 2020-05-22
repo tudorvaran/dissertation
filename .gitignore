@@ -130,3 +130,13 @@ dmypy.json
 
 # Pycharm
 .idea/
+
+# Directory used for testing python packages
+testing/
+
+# Machine learning
+*.jpg
+*.h5
+*.bin
+
+

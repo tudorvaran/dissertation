@@ -11,11 +11,15 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import dj_database_url
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+env = environ.Env(DEBUG=(bool, True))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -32,7 +36,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +44,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+THIRD_PARTY_APPS = [
+    'django_rq',
+    'scheduler'
+]
+
+LOCAL_APPS = [
+    'photos_ml'
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -90,6 +104,15 @@ CACHES = {
     }
 }
 
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -128,3 +151,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+OBJECT_RECOGNITION_MODEL = env.str('OBJECT_RECOGNITION_MODEL', default='resnet50_coco_best_v2.0.1.h5')
+#OBJECT_RECOGNITION_MODEL = env.str('OBJECT_RECOGNITION_MODEL', default='yolo-tiny.h5')
+WORD2VEC_MODEL = env.str('WORD2VEC_MODEL', default='GoogleNews-vectors-negative300.bin')
+SHOW_DEBUG_IMAGES = env.bool('SHOW_DEBUG_IMAGES', default=False)
+
+PHOTOS_INPUT_PATH = env.str('PHOTOS_INPUT_PATH', default=os.path.join(BASE_DIR, 'photos_ml', 'photos_input'))
+PHOTOS_OUTPUT_PATH = env.str('PHOTOS_OUTPUT_PATH', default=os.path.join(BASE_DIR, 'photos_ml', 'photos_output'))
+
+IMAGE_PATH = env.str('IMAGE_PATH', default=PHOTOS_INPUT_PATH if not SHOW_DEBUG_IMAGES else PHOTOS_OUTPUT_PATH)
