@@ -139,4 +139,13 @@ testing/
 *.h5
 *.bin
 
+# written part
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.lof
+*.lot
+*.pdf
+*.toc
 

@@ -1,0 +1,146 @@
+\documentclass[a4paper, 12pt, english]{report}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{babel}
+\usepackage{multicol}
+\usepackage{multirow}
+
+\usepackage[section]{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{verbatim} 
+\usepackage{color}
+
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
+\usepackage{setspace}
+\onehalfspacing
+%\singlespacing
+
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\graphicspath{{images/}}
+
+\newcommand{\A}{\ensuremath{\mathcal A}}
+\newcommand{\M}{\ensuremath{\mathcal M}}
+\newcommand{\E}{\ensuremath{\mathcal E}}
+\newcommand{\X}{\ensuremath{\mathcal X}}
+\newcommand{\D}{\ensuremath{\mathcal D}}
+\newcommand{\G}{\ensuremath{\mathcal G}}
+\newcommand{\powerset}{\ensuremath{\mathcal P}}
+\newcommand{\R}{\ensuremath{\mathcal R}}
+\newcommand{\re}{\ensuremath{\mathbb R}}
+\newcommand{\nat}{\ensuremath{\mathbb N}}
+
+
+\setcounter{secnumdepth}{3}
+
+\geometry{a4paper,top=2cm,left=2cm,right=2cm,bottom=2cm}
+\newtheorem{lemma} {Lemma}
+\newtheorem{definition} {Definition}[section]
+\newtheorem{proof} {Proof}
+\newtheorem{remark} {Remark}[section]
+\newtheorem{prop} {Proposition}
+\newtheorem{theorem} {Theorem}
+%\newtheorem{algorithm}{Algorithm}[section]
+  
+\newcommand{\eop}{\hfill $\sqcap\!\!\!\!\sqcup$} % end of proof   
+\pagestyle{headings}
+\begin{document}
+
+\begin{titlepage}
+\sloppy
+\begin{center}
+\Large{BABE\c{S}-BOLYAI UNIVERSITY CLUJ-NAPOCA}
+
+\Large{FACULTY OF MATHEMATICS AND COMPUTER SCIENCE}
+
+\Large{SPECIALIZATION APPLIED COMPUTATIONAL INTELLIGENCE}
+
+ 
+
+%\textsl{
+\vspace{7cm}
+\Large \textbf{DISSERTATION THESIS}
+
+\vspace{1.3cm}
+\Huge \textbf{A RECOMMENDER SYSTEM FOR IMAGES WITH OBJECTS DETECTION}
+
+\end{center}
+\vspace{4cm}
+
+\begin{flushleft}
+	\Large{Scientific supervisor: Lect. Ph.D. Radu D. G\u{a}ceanu}
+\end{flushleft}
+
+\vspace{1cm}
+
+\begin{flushright}
+	\Large{Author: Tudor V\u{a}ran}
+\end{flushright}
+
+\vspace{1cm}
+
+\begin{center}
+\Large{2020}
+\end{center}
+
+\end{titlepage}
+
+\begin{titlepage}
+\sloppy
+\begin{center}
+\Large{UNIVERSITATEA BABE\c{S}-BOLYAI CLUJ-NAPOCA}
+
+\Large{FACULTATEA DE MATEMATIC\u{A} \c{S}I INFORMATIC\u{A} }
+
+\Large{SPECIALIZAREA INTELIGEN\c{T}\u{A} COMPUTA\c{T}IONAL\u{A} APLICAT\u{A}}
+
+ 
+
+%\textsl{
+\vspace{7cm}
+
+\Large \textbf{LUCRARE DE DISERTA\c{T}IE }
+
+\vspace{1.3cm}
+
+\Huge \textbf{A RECOMMENDER SYSTEM FOR IMAGES WITH OBJECTS DETECTION}
+
+\end{center}
+\vspace{4cm}
+
+\begin{flushleft}
+	\Large{Conduc\u{a}tor \c{s}tiin\c{t}ific: Lect. Ph.D. Radu D. G\u{a}ceanu}
+\end{flushleft}
+
+\vspace{1cm}
+
+\begin{flushright}
+\Large{Absolvent: Tudor V\u{a}ran}
+
+\end{flushright}
+
+\vspace{1cm}
+
+\begin{center}
+\Large{2020}
+\end{center}
+
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+
+\renewcommand\bibname{Bibliography}
+
+\addcontentsline{toc}{chapter}{\textbf{Bibliography}}
+\bibliographystyle{plain}
+\bibliography{bibliography} 
+
+\end{document}
