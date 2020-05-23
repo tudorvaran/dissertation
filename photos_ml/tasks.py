@@ -63,12 +63,16 @@ def build_vectors(ignore_existing=False):
         os.rename(new_tmp_file, photo.get_output_path())
 
         all_detections[photo.id] = detections
+        if not len(detections):
+            logger.warning("No objects found!", photo_id=photo.id)
 
     logger.info("Finished image recognition. Loading word2vec model")
     word2vec_model = gensim.models.KeyedVectors.load_word2vec_format(fname=settings.WORD2VEC_MODEL, binary=True)
     logger.info("Loaded word2vec model")
 
-    EnvironmentFuzzyMembership.objects.all().delete()
+    if not ignore_existing:
+        EnvironmentFuzzyMembership.objects.all().delete()
+
     for photo in Photo.objects.all():
         if not photo.exists(check_input=True):
             continue
@@ -76,7 +80,7 @@ def build_vectors(ignore_existing=False):
         if ignore_existing and photo.get_vector():
             continue
 
-        detections = all_detections[photo.id]
+        detections = all_detections.get(photo.id, [])
         weights = [detection["percentage_probability"] for detection in detections]
         if not len(weights):
             logger.warning("No objects detected in photo", id=photo.id, name=photo.name)
@@ -106,6 +110,8 @@ def build_vectors(ignore_existing=False):
 
 
 def build_tree():
+    logger.info("Building tree...")
+
     photo_list = [photo for photo in Photo.objects.all().order_by('pk') if photo.exists() and len(photo.get_vector())]
     id_mapping = [photo.id for photo in photo_list]
     vectors = np.array([
