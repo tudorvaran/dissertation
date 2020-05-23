@@ -1,6 +1,5 @@
 \documentclass[a4paper, 12pt, english]{report}
 \usepackage{graphicx}
-\usepackage{amssymb}
 \usepackage{geometry}
 \usepackage{babel}
 \usepackage{multicol}
@@ -19,22 +18,7 @@
 \onehalfspacing
 %\singlespacing
 
-\usepackage{amsmath}
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\argmin}{arg\,min}
 \graphicspath{{images/}}
-
-\newcommand{\A}{\ensuremath{\mathcal A}}
-\newcommand{\M}{\ensuremath{\mathcal M}}
-\newcommand{\E}{\ensuremath{\mathcal E}}
-\newcommand{\X}{\ensuremath{\mathcal X}}
-\newcommand{\D}{\ensuremath{\mathcal D}}
-\newcommand{\G}{\ensuremath{\mathcal G}}
-\newcommand{\powerset}{\ensuremath{\mathcal P}}
-\newcommand{\R}{\ensuremath{\mathcal R}}
-\newcommand{\re}{\ensuremath{\mathbb R}}
-\newcommand{\nat}{\ensuremath{\mathbb N}}
-
 
 \setcounter{secnumdepth}{3}
 
@@ -132,6 +116,25 @@
 \tableofcontents
 \listoffigures
 \listoftables
+
+\include{abstract}
+
+\include{introduction}
+
+\include{chapter_ml}
+
+\include{chapter_objdet}
+
+\include{chapter_wordembed}
+
+\include{chapter_clustering}
+
+\include{chapter_approach}
+
+\include{chapter_application}
+
+\include{chapter_evaluation}
+
 
 
 \renewcommand\bibname{Bibliography}
