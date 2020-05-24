@@ -1,77 +1,52 @@
-\documentclass[a4paper, 12pt, english]{report}
+% !TEX encoding = IsoLatin9
+\documentclass[a4paper,12pt]{report}
+
 \usepackage{graphicx}
-\usepackage{geometry}
-\usepackage{babel}
-\usepackage{multicol}
-\usepackage{multirow}
+\usepackage{float}
+\usepackage[backend=biber]{biblatex}
 
-\usepackage[section]{algorithm}
-\usepackage{algorithmic}
+\addbibresource{./thesis.bib}
 
-\usepackage{verbatim} 
-\usepackage{color}
+\graphicspath{ {./img/} }
 
-\newcommand{\keywords}[1]{\par\addvspace\baselineskip
-\noindent\keywordname\enspace\ignorespaces#1}
+\title{A RECOMMENDER SYSTEM FOR IMAGES WITH OBJECT DETECTION}
+\date{20th June 2020}
+\author{Tudor V\u aran\\ Computer Science, Babe\c s-Bolyai University}
 
-\usepackage{setspace}
-\onehalfspacing
-%\singlespacing
 
-\graphicspath{{images/}}
-
-\setcounter{secnumdepth}{3}
-
-\geometry{a4paper,top=2cm,left=2cm,right=2cm,bottom=2cm}
-\newtheorem{lemma} {Lemma}
-\newtheorem{definition} {Definition}[section]
-\newtheorem{proof} {Proof}
-\newtheorem{remark} {Remark}[section]
-\newtheorem{prop} {Proposition}
-\newtheorem{theorem} {Theorem}
-%\newtheorem{algorithm}{Algorithm}[section]
-  
-\newcommand{\eop}{\hfill $\sqcap\!\!\!\!\sqcup$} % end of proof   
-\pagestyle{headings}
 \begin{document}
+
+\pagestyle{headings}
 
 \begin{titlepage}
 \sloppy
 \begin{center}
 \Large{BABE\c{S}-BOLYAI UNIVERSITY CLUJ-NAPOCA}
-
 \Large{FACULTY OF MATHEMATICS AND COMPUTER SCIENCE}
+\Large{SPECIALIZATION APPLIED COMPUTATIONAL INTELLIGENCE IN ENGLISH}
 
-\Large{SPECIALIZATION APPLIED COMPUTATIONAL INTELLIGENCE}
-
-%\textsl{
-\vspace{6cm}
+\vspace{4cm}
 \Large \textbf{DISSERTATION THESIS}
 
 \vspace{1.3cm}
-\Huge \textbf{A RECOMMENDER SYSTEM FOR IMAGES WITH OBJECTS DETECTION}
-
+\Huge \textbf{A RECOMMENDER SYSTEM FOR IMAGES WITH OBJECT DETECTION}
 \end{center}
-\vspace{4cm}
+\vspace{3cm}
 
 \begin{flushleft}
-	\Large{Scientific supervisor: Lect. Ph.D. Radu D. G\u{a}ceanu}
+    \Large{Scientific supervisor: Lect. Ph.D. Radu D. G\u{a}ceanu}
 \end{flushleft}
-
 \vspace{1cm}
 
 \begin{flushright}
-	\Large{Author: Tudor V\u{a}ran}
+    \Large{Author: V\u{a}ran Tudor}
 \end{flushright}
 
 \vspace{1cm}
-
 \begin{center}
 \Large{2020}
 \end{center}
-
 \end{titlepage}
-
 \begin{titlepage}
 \sloppy
 \begin{center}
@@ -81,27 +56,25 @@
 
 \Large{SPECIALIZAREA INTELIGEN\c{T}\u{A} COMPUTA\c{T}IONAL\u{A} APLICAT\u{A}}
 
- 
-%\textsl{
-\vspace{6cm}
 
-\Large \textbf{LUCRARE DE DISERTA\c{T}IE }
 
-\vspace{1.3cm}
+\vspace{3cm}
 
+\Large \textbf{LUCRARE DE DISERTA\c{T}IE}
+\par\vspace{1.3cm}
 \Huge \textbf{A RECOMMENDER SYSTEM FOR IMAGES WITH OBJECTS DETECTION}
 
 \end{center}
-\vspace{4cm}
+\vspace{2.5cm}
 
 \begin{flushleft}
-	\Large{Conduc\u{a}tor \c{s}tiin\c{t}ific: Lect. Ph.D. Radu D. G\u{a}ceanu}
+    \Large{Conduc\u{a}tor \c{s}tiin\c{t}ific: Lect. Ph.D. Radu D. G\u{a}ceanu}
 \end{flushleft}
 
 \vspace{1cm}
 
 \begin{flushright}
-\Large{Absolvent: Tudor V\u{a}ran}
+\Large{Absolvent: V\u{a}ran Tudor}
 
 \end{flushright}
 
@@ -113,36 +86,29 @@
 
 \end{titlepage}
 
+\include{abstract}
+
 \tableofcontents
 \listoffigures
 \listoftables
 
 \include{abstract}
-
 \include{introduction}
-
 \include{chapter_ml}
-
 \include{chapter_objdet}
-
 \include{chapter_wordembed}
-
 \include{chapter_clustering}
-
 \include{chapter_approach}
-
-\include{chapter_application}
-
 \include{chapter_evaluation}
-
+\include{chapter_application}
 \include{chapter_conclusion}
-
 
 
 \renewcommand\bibname{Bibliography}
 
 \addcontentsline{toc}{chapter}{\textbf{Bibliography}}
-\bibliographystyle{plain}
-\bibliography{bibliography} 
+
+\printbibliography
 
 \end{document}
+

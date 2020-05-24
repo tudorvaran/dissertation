@@ -1,9 +1,49 @@
 \chapter{Machine Learning}
 \label{chap:ml}
 
-This chapter is for machine learning
+\qquad This chapter introduces the reader into the machine learning field and the basic categorisation of it. Section \ref{sec:ml_what} present the reader with a definition of the domain, followed by section \ref{sec:ml_types} which shows a categorisation of machine learning algorithms by their type of learning. Finally, depending on the task at hand, based on the way a certain machine learning algorithm reaches its goal, another categorisation is presented at section \ref{sec:ml_goals}.
+\section{What is machine learning?}
+\label{sec:ml_what}
 
-\section{This is a test section}
-\label{sec:test}
+\qquad Machine learning is a field, part of computer science, which uses statistical techniques as a mean for learning computer systems without explicitly being programmed to. Through experience, the machine is able to adapt, improve its performance and overcome certain obstacles. Perhaps the best way to describe this domain is "\textit{programming by example}" \cite{modernapproach}
 
-I'm now referring to \ref{sec:test}
+\qquad The main goal of machine learning is being able to learn how to solve problems without human assistance. A human programmer might not see certain patterns that the machine learning algorithms sees through experimentation.
+
+\qquad Ditterich mentions 4 situations where a problems becomes too complicated or the overhead is too big \cite{modernapproach}:
+
+\begin{enumerate}
+\item{Problems where no human expert exists;}
+\item{Problems where human experts exist, but the expertise cannot be explained. Most common domains include natural language processing fields, such as speech recognition or translation. They are usually solved by humans as it is hard to implement such an algorithm in a traditional way;}
+\item{Dynamic problems (phenomena are changing rapidly), such as weather forecast or the stock market;}
+\item{User customisable applications (e.g customisable advertising)}
+\end{enumerate}
+
+\section{Types of learning}
+\label{sec:ml_types}
+
+\qquad Usually, the task in hand determines the category of the machine learning algorithm. These tasks can be categorised based on the type of learning and the main one are \cite{modernapproach} \cite{new-advances-ml}:
+
+\begin{itemize}
+\item{Supervised learning: the dataset is fully available. The system tries to obtain the desired output from the input set. The efficacy of the prediction is determined by the system's closeness to the correct answer;}
+\item{Unsupervised learning: only the input is available and there is no perfect way to solve. This type of learning is based used in reasoning, decision making, predicting, communicating and categorising;}
+\item{Reinforcement learning: the machine produces actions which changes the environment in a positive or a negative way. A teacher is available to reward or punish the actor;}
+\item{Active learning: the teacher is available to the system at all times.}
+\end{itemize}
+
+\qquad The most widely used types of learning are unsupervised learning supervised learning, but reinforcement learning is starting to gain traction in current days, as it's been proven to be efficient in playing games. Neural networks and decision trees are most widely used algorithms part of supervised learning, while clustering is the most popular method for unsupervised learning.
+
+\section{Goals of tasks}
+\label{sec:ml_goals}
+
+\qquad While section \ref{sec:ml_types} characterises a machine learning based on the way it interacts with the data, there is another important topic for discussion regarding categorisation: the way an algorithm reaches its goal. Based on them, machine learning tasks can be categorised \cite{modernapproach}:
+
+\begin{itemize}
+\item{Prediction: the system predicts a desired output from an input, based on previous data (e.g. pricing of apartments based on features);}
+\item{Clustering: the system groups objects together, based on their similarity of their features. This is used to link certain items together, for easy similarity querying (e.g. recommender systems). Typically found in unsupervised learning;}
+\item{Classification: similar to prediction but the output are available from a strictly defined set (e.g. What digit from 0 to 9 is found in a picture);}
+\item{Regression: for estimation of mathematical functions of variables;}
+\item{Planning: the system learns to deduce an optimal sequence of operations in order to solve a task. Typically used in reinforcement learning (e.g. Playing a game of GO).}
+\end{itemize}
+
+
+

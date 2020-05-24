@@ -1,19 +1,88 @@
-\chapter{Application: A website with a recommender system}
-\label{chap:application}
+\chapter{Application: Website with recommender}
+\label{chap:app}
 
 This section will focus on describing the application
 
 \section{Architecture}
-\label{sec:application_architecture}
+\label{sec:app_architecture}
 
-Application, website, caching blabla
+Application, website
 
 \section{Technologies used}
-\label{sec:application_technologies}
+\label{sec:app_technology}
 
 Technologies used
 
-\section{User manual}
-\label{sec:application_manual}
+\subsection{Django}
+\label{subsec:app_technology_django}
 
-How to install and use the application
+For creating the website, what this package contains etc.
+
+\subsection{Redis}
+\label{subsec:app_technology_redis}
+
+Redis is used for caching and storing the tree.
+
+\subsection{Numpy}
+\label{subsec:app_technology_numpy}
+
+Numpy is used for math stuff and also required by other packages
+
+\subsection{Scikit}
+\label{subsec:app_technology_scikit}
+
+Scikit is used for auto-creation of the trees
+
+\subsection{Gensim and google model}
+\label{subsec:app_technology_gensim}
+
+Gensim is used for word2vec and I also used a pre-trained model from Google News
+
+\subsection{ImageAI and Resnet model}
+\label{subsec:app_technology_imageai}
+
+Image AI is used for object detection and I also used a pre-trained model resnet-coco
+
+\section{Installation}
+\label{sec:app_install}
+
+How to install and use the application. Concept of Django settings and environment variables.
+
+\subsection{Redis}
+\label{subsec:app_install_redis}
+
+Install Redis first
+
+\subsection{Requirements}
+\label{subsec:app_install_requirements}
+
+Install requirements.txt file
+
+\subsection{Database configuration and migration}
+\label{subsec:app_install_database}
+
+Configure a database or create the default ones
+
+\subsection{Models}
+\label{subsection:app_install_models}
+
+Download some models for word2vec and object detection from the internet or use the provided ones. Specifications for this.
+
+\section{Usage}
+\label{section:app_usage}
+
+How to use the website in general
+
+\subsection{Admin interface}
+\label{section:app_usage_admin}
+
+Tell the user how to create superuser
+
+\subsection{Custom querying}
+\label{section:app_usage_querying}
+
+Perform special queries.
+
+
+
+
