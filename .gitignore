@@ -148,4 +148,7 @@ testing/
 *.lot
 *.pdf
 *.toc
+*.bcf
+*.xml
+*.ps
 
