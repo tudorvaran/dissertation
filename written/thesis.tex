@@ -1,14 +1,19 @@
-% !TEX encoding = IsoLatin9
-\documentclass[a4paper,12pt]{report}
+\documentclass[a4paper, 12pt]{report}
 
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{indentfirst}
 \usepackage[backend=biber]{biblatex}
 
 \addbibresource{./thesis.bib}
 
 \graphicspath{ {./img/} }
+\geometry{a4paper,top=2cm,left=2cm,right=2cm,bottom=2cm}
+\onehalfspacing
+\setlength{\parindent}{2em}
 
 \title{A RECOMMENDER SYSTEM FOR IMAGES WITH OBJECT DETECTION}
 \date{20th June 2020}
@@ -22,8 +27,10 @@
 \begin{titlepage}
 \sloppy
 \begin{center}
-\Large{BABE\c{S}-BOLYAI UNIVERSITY CLUJ-NAPOCA}
-\Large{FACULTY OF MATHEMATICS AND COMPUTER SCIENCE}
+\Large{BABE\c{S}-BOLYAI UNIVERSITY CLUJ-NAPOCA} 
+
+\Large{FACULTY OF MATHEMATICS AND COMPUTER SCIENCE} 
+
 \Large{SPECIALIZATION APPLIED COMPUTATIONAL INTELLIGENCE IN ENGLISH}
 
 \vspace{4cm}
@@ -93,7 +100,6 @@
 \listoffigures
 \listoftables
 
-\include{abstract}
 \include{introduction}
 \include{chapter_ml}
 \include{chapter_objdet}
@@ -106,9 +112,7 @@
 
 
 \renewcommand\bibname{Bibliography}
-
 \addcontentsline{toc}{chapter}{\textbf{Bibliography}}
-
 \printbibliography
 
 \end{document}
