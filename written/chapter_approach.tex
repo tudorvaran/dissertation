@@ -1,17 +1,36 @@
 \chapter{Approach: from photo to point}
 \label {chap:approach}
 
-This is where I'd put my approach
+This chapter focuses on defining the problem and presenting a formalised approach on how to solve it. Section \ref{sec:approach_modelling} ponders on idea of modelling pictures into points of a hyperplane. After that has been defined, sections \ref{sec:approach_general} and \ref{sec:approach_formal} present formalisations of the whole process, the first focusing on more general aspects, while the latter on every single detail.
 
 \section{Problem modelling}
 \label{sec:approach_modelling}
 
-What needs to be solved?
+Recommender systems rely on recommending similar content based on some traits of the items. When recommending photographs, there is the problem of how will that be represented in a hyperplane. A naive solution relies on having individual pixel as a separate dimension. However, this solution is problematic for multiple reasons. High number of dimensions increase the complexity and two pictures may have a different amount of pixels. Obviously, relying on raw data for recommendations is not a good option.
+
+When looking at pictures, people tend to identify objects and other people in order to give photos meaning. These are the most important aspects in pictures for us, humans, not endless, meaningless pixels. 
+
+The question then becomes: how can photographs be modelled into points of a hyperplane in such a way that a recommender system which looks at its neighbours will find others with similar ones with similar objects? 
 
 \section{General view}
 \label{sec:approach_general}
 
-General view of the problem
+To answer the question posed in section \ref{sec:approach_modelling}, it must be a solution which makes an emphasis on object detection. A first and crucial step is performing object detection on the input images.
+
+However, object detection models which use neural networks are only capable of giving an ordered list of objects, sorted by confidence. Some models are capable of detecting hundreds or thousands of objects, so having a dimension with the frequency of each word will send the solution back to the pixel problem. 
+
+In order to further reduce dimensions, the object names can be reduced by being associated with certain environments. And there are models which do such that to some degree. Word2vec transforms a word into a multidimensional vector \cite{word2vec}, which can then have certain operations performed on it in comparison with other words, such as similarity. This can prove as a good solution to reducing dimensions.
+
+In fuzzy logic, the membership of an entity to a set is not measured as being black or white, but as a number from 0 to 1. Using word2vec similarity operator as a fuzzy function can prove useful in obtaining a general membership of a picture to a certain theme. The only problem standing is selecting themes and choosing the right words to describe them.
+
+To summarize: the photo to point transformation process starts by processing an input image, identifying its objects, then performing a weighted average of fuzzy membership of each word to a certain theme (where the theme is a word and the fuzzy function is the similarity function from the word2vec model). Finally, by having $N$ themes, each photograph is mapped into a $N$-dimensional hyperplane (figure \ref{fig:photo2point}).
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.9\textwidth]{photo2point}
+\caption{A summary of the photo to point process}
+\label{fig:photo2point}
+\end{figure}
 
 \section{Solution formalisation}
 \label{sec:approach_formal}
