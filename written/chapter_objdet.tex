@@ -21,12 +21,12 @@ This chapter is for cnn and object recognition
 \item{Recurrent Neural Networks: for sequential data such as text or time series.}
 \end{itemize}
 
-\qquad They heavily rely on the backpropagation process (section \ref{subsec:obj_nn_backpropagation}), which requires a desired output in order to adjust weights. This makes neural networks a supervised learning task (section \ref{sec:ml_types}) and can learn by predicting or classifying (section \ref{sec:ml_goals}).
+\qquad They heavily rely on the backpropagation process (section \ref{subsec:obj_nn_backpropagation}), which requires a desired output in order to adjust weights. This makes neural networks a supervised learning model (section \ref{sec:ml_types}) and can learn by predicting or classifying (section \ref{sec:ml_goals}).
 
 \subsection{Neuron}
 \label{subsec:obj_nn_neuron}
 
-\qquad \textbf{Definition:} An artificial neuron is a function $f_i$ of input $x = (x_1, x_2, ... , x_d)$ weighted by a vector $w_j = (w_{j,1}, w_{j,2}, ... w_{j,d}) and completed by a neuron bias b_j$. The activation function has the following format $y_j = f_i(x) = \phi(< w_j, x > + b_j)$ \cite{backpropagation} and depends on the type of task it tries to solve. Some examples include:
+\qquad \textbf{Definition:} An artificial neuron is a function $f_i$ of input $x = (x_1, x_2, ... , x_d)$ weighted by a vector $w_j = (w_{j,1}, w_{j,2}, ... w_{j,d})$ and completed by a neuron bias $b_j$. The activation function has the following format $y_j = f_i(x) = \phi(< w_j, x > + b_j)$ \cite{backpropagation} and depends on the type of task it tries to solve. Some examples include:
 
 \begin{itemize}
 \item{ReLU, or Rectified Linear Unit: \[ f(x) = max(0, x) \]}
@@ -66,7 +66,7 @@ This chapter is for cnn and object recognition
 \label{fig:ann}
 \end{figure}
 
-\qquad In a typical artificial neural network all layers are dense or all nodes from a level are directly connected to those on the next level.
+\qquad In a typical artificial neural network all layers are dense i.e. all nodes from a level are directly connected to those on the next level.
 
 \section{Convolutional Neural Networks}
 \label{sec:obj_cnn}
