@@ -6,27 +6,103 @@ This chapter is for cnn and object recognition
 \section{What is object detection?}
 \label{sec:obj_what}
 
-What is?
+\qquad 
 
 \section{Neural networks}
 \label{sec:obj_nn}
 
-What are neural networks in general, how do they work, some graphic or something
+\qquad \textbf{Definition:} An artificial neural network is a parallel, distributed information processing structure consisting of processing elements (which both possess a local memory and act as an intermediary for information processing operations) interconnected together with unidirectional signal channels called connections. Each consisting element has a single output connection which branches out into many more connections with the same signal, based on the underlying configuration. The signal can be of any mathematical type and must be depleted once it has been used \cite{backpropagation}.
+
+\qquad Based on their format, they can be classified into \cite{toulouse-nn}:
+
+\begin{itemize}
+\item{Multilayer Perceptrons: where the final scope is categorisation of elements into 0 or 1 values;}
+\item{Convolutional Neural Networks (CNN): the connections are linked between neighbours. Works best with 2-dimensional matrices, such as images;}
+\item{Recurrent Neural Networks: for sequential data such as text or time series.}
+\end{itemize}
+
+\qquad They heavily rely on the backpropagation process (section \ref{subsec:obj_nn_backpropagation}), which requires a desired output in order to adjust weights. This makes neural networks a supervised learning model (section \ref{sec:ml_types}) and can learn by predicting or classifying (section \ref{sec:ml_goals}).
+
+\subsection{Neuron}
+\label{subsec:obj_nn_neuron}
+
+\qquad \textbf{Definition:} An artificial neuron is a function $f_i$ of input $x = (x_1, x_2, ... , x_d)$ weighted by a vector $w_j = (w_{j,1}, w_{j,2}, ... w_{j,d})$ and completed by a neuron bias $b_j$. The activation function has the following format $y_j = f_i(x) = \phi(< w_j, x > + b_j)$ \cite{backpropagation} and depends on the type of task it tries to solve. Some examples include:
+
+\begin{itemize}
+\item{ReLU, or Rectified Linear Unit: \[ f(x) = max(0, x) \]}
+\item{The sigmoid function: \[ f(x) = \frac{1}{1 + e^{-x}} \]} 
+\item{The tanh function: \[ f(x) = tanh(x) \]}
+\item{Softmax, usually simplified (used for classification as a last layer - see section \ref{subsec:obj_nn_layers}): 
+\[ f(x) = 
+	\begin{cases} 
+		1 & i = argmax(x) \\
+		0 & i \neq argmax(x)
+	\end{cases}
+\]}
+\end{itemize}
+
+\subsection{Backpropagation}
+\label{subsec:obj_nn_backpropagation}
+
+\qquad Backpropagation or short for "\textit{backward propagation of errors}", is a process through which a neural network corrects its weights during the training process. Given the output of the network and the desired output, a neuron gets corrected from the last layer up until the first with the use of an error function.
+
+\qquad \textbf{Definition:} Backpropagation is the same as computing the delta for a multilayer feedforward network, thus requiring three things \cite{brilliant:backpropagation}:  
+
+\begin{enumerate}
+\item{A supervised learning dataset. Denote by $X = (x_1, y_1), ... (x_N, y_N)$ a training set with N elements, with $x$ as input and $y$ as desired output;}
+\item{A feedforward network (section \ref{sec:obj_nn}), with neurons and activation functions (section \ref{subsec:obj_nn_neuron});}
+\item{An error function, $E(X, \theta)$, which defines the error between the expected and actual output and has the following form: \[ \theta^{t+1} = \theta^t - \alpha \frac{\delta E(X, \theta^t)}{\delta \theta} \]}
+\end{enumerate}
+
+\subsection{Layers}
+\label{subsec:obj_nn_layers}
+
+\qquad Most neural networks are layered, or structured like a \textbf{D}irected \textbf{A}cyclic \textbf{G}raph (DAG) where the nodes (which are outputs of functions) on the same level do not interact with each other through edges (activation functions). Refering to a N-layer neural networks means $N+1$ layers of nodes, where the first layer contains the input, all subsequent $N-1$ layers are hidden and the last one contains the computed result value (figure \ref{fig:ann}).
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.7\textwidth]{ann}
+\caption{An artificial neural network with a layered structure}
+\label{fig:ann}
+\end{figure}
+
+\qquad In a typical artificial neural network all layers are dense i.e. all nodes from a level are directly connected to those on the next level.
 
 \section{Convolutional Neural Networks}
 \label{sec:obj_cnn}
 
-By what do cnn differ from other types of neural networks. Why are they special.
+\qquad Convolutional neural networks are sub-category of artificial neural networks. They have as main characteristic and distinct feature the convolution operator (section \ref{subsec:obj_cnn_conv}) which requires the input and outputs to be a 2 or more dimensional matrices. Due to the convolution operator working strictly on neighbours, they work particularly well on images performance-wise. They are widely used in identifying objects in pictures
 
 \subsection{Convolution operator}
-\label{sec:obj_cnn_conv}
+\label{subsec:obj_cnn_conv}
 
-Main characteristic of the cnn is the convolution operation
+\qquad \textbf{Definition:} The discrete convolution between two functions $f$ and $g$ is defined as: 
+\[ (f * g)(x) = \sum_{t}{g(x + t)} \] 
+For 2 dimensional signals such as images, the following convolutions are considered: 
+\[ (K * I)(i, j) = \sum_{m,n}{K(m, n)I(i + n, j + m)}\]
+where $K$ is a convolution kernel applied to a 2D signal \cite{toulouse-nn}.
+
+\qquad The kernel $K$ can be seen as a sliding window going through an input image, iterating all positions where it sees fit (figure \ref{fig:conv}).
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.5\textwidth]{conv}
+\caption{The convolution operation examplified}
+\label{fig:conv}
+\end{figure}
+
 
 \subsection{Pooling}
-\label{sec:obj_cnn_pooling}
+\label{subsec:obj_cnn_pooling}
 
-Pooling methods: average, max
+\qquad Similar to the convolution operator, pooling layers reduce the image space using sliding windows. The difference is that pooling layers apply mathematical functions, such as max or average, and the sliding window does not overlap. Figure \ref{fig:pool_max} exemplifies how max pooling works.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.7\textwidth]{pool_max}
+\caption{The convolution operation examplified}
+\label{fig:pool_max}
+\end{figure}
 
 \section{Residual networks}
 \label{sec:obj_resnet}
