@@ -49,14 +49,49 @@ As the number of dimension increase, the chance, which is the volume of the hype
 \subsection{K-d tree}
 \label{subsec:cluster_knn_kdtree}
 
-Why is this a good solution
+A K-d or K-dimensional binary search tree is a dataset of points in a K-dimensional hyperspace which offers a structuring of data in such a way that is easier for querying proximity points \cite{kdtree}. 
+
+Because it is a binary tree, each node has two children, which are determined by a hyperplane cut. At each node, if it doesn't contain a point, it contains a coordinate and a dimension on which the hyperspace is cut. The left and right children refer to the space partitions created by the cut.
+
+When creating a k-d tree, the cuts are performed on the dimension which is the most divisive (it makes the most clear partitioning of the hyperspace). Figure \ref{fig:kdtree} illustrates how the cuts on a 2-dimensional space looks like.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.4\textwidth]{kdtree}
+\caption{A 2-dimensional plane being cut for a k-d tree. Each line represents a node, with the left/upper or upper/bottom partitions being children of it. The squares with points in them are leafs.}
+\label{fig:kdtree}
+\end{figure}
 
 \subsection{Ball tree}
 \label{subsec:cluster_knn_balltree}
 
-Why does this improve further
+Similar to the k-d tree, ball trees are binary search trees which partition the dataset in a hierarchy, with the leafs containing the interesting points \cite{balltree}. What is different from k-d trees, however, is that each node is a sphere which covers either a point or contains another smaller sphere. They have been proven to be one of the fastest structures for the NN search \cite{balltree}.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.4\textwidth]{balltree}
+\caption{A 2-dimensional ball tree}
+\label{fig:balltree}
+\end{figure}
+
+Ball trees are so similar, that in fact, the k-d creation splitting algorithm can be applied on creating one. The steps for this operation are:
+
+\begin{enumerate}
+\item{Find the dimension of greater spread;}
+\item{Based on the dimension found, determine the central point and set it as pivot for the current node;}
+\item{Construct the ball trees which contain the points left and right of the pivot;}
+\item{If any new ball contains a single point, the ball is a single point in space.}
+\end{enumerate}
+
+For nearest neighbours searching, a depth-first search is performed using a priority queue. During this, there are three cases that may occur (in order):
+
+\begin{enumerate}
+\item{If searched item is further than the current ball than it is from all items in the queue, dismiss the current ball;}
+\item{If the current ball contains points, update the queue with all of them;}
+\item{Search both children, with the closest ball to the desired point first.}
+\end{itemize}
 
 \section{Applications}
 \label{sec:cluster_applications}
 
-Applications for categorisation
+Clustering is used in malware detection \cite{malware}, where a certain combination of behaviours or function calls determine if the application means well or attempts to harm systems. Another obvious usage of clustering is recommender systems, where similar content is suggested to users to increase time spent on a platform.
