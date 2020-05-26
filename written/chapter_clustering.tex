@@ -49,11 +49,11 @@ As the number of dimension increase, the chance, which is the volume of the hype
 \subsection{K-d tree}
 \label{subsec:cluster_knn_kdtree}
 
-A K-d or K-dimensional binary search tree is a dataset of points of a K-dimensional hyperspace which offers a structuring of data in such a way that is easier for querying proximity points \cite{kdtree}. 
+A K-d or K-dimensional binary search tree is a dataset of points in a K-dimensional hyperspace which offers a structuring of data in such a way that is easier for querying proximity points \cite{kdtree}. 
 
-Because it is a binary tree, each node has two children, which are determined by a hyperplane cut. At each node, if it doesn't contain a point, it contains a coordinate and a dimension on which the hyperspace is cut. The left and right children refer to the partitions created by the cut.
+Because it is a binary tree, each node has two children, which are determined by a hyperplane cut. At each node, if it doesn't contain a point, it contains a coordinate and a dimension on which the hyperspace is cut. The left and right children refer to the space partitions created by the cut.
 
-When creating a k-d tree, the cuts are performed on the dimension which is the most divisive (it makes the most clear partitioning of the hyperspace. Figure \ref{fig:kdtree} illustrates how the cuts on a 2-dimensional space looks like.
+When creating a k-d tree, the cuts are performed on the dimension which is the most divisive (it makes the most clear partitioning of the hyperspace). Figure \ref{fig:kdtree} illustrates how the cuts on a 2-dimensional space looks like.
 
 \begin{figure}[b!]
 \centering
@@ -83,12 +83,12 @@ Ball trees are so similar, that in fact, the k-d creation splitting algorithm ca
 \item{If any new ball contains a single point, the ball is a single point in space.}
 \end{enumerate}
 
-For searching, it performs a in depth-first search using a priority queue. During searching, only three operations are are performed:
+For nearest neighbours searching, a depth-first search is performed using a priority queue. During this, there are three cases that may occur (in order):
 
-\begin{itemize}
-\item{If searched item is further than the current ball than all items in the queue, dismiss the current ball;}
+\begin{enumerate}
+\item{If searched item is further than the current ball than it is from all items in the queue, dismiss the current ball;}
 \item{If the current ball contains points, update the queue with all of them;}
-\item{Otherwise, search both children, with the closest ball to the desired point first.}
+\item{Search both children, with the closest ball to the desired point first.}
 \end{itemize}
 
 \section{Applications}
