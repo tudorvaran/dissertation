@@ -1,27 +1,50 @@
 \chapter{Clustering}
 \label {chap:cluster}
 
-This chapter is dedicated to clustering
+This chapter is dedicated to clustering tasks, which is used in querying recommendations (section \ref{subsec:approach_formal_query}). It contains basic notions on clustering, the KNN algorithm and a discussion on the issues of it. Section \ref{sec:cluster_what} presents general aspects of clustering, such as types of clustering methods. Section \ref{sec:cluster_knn} presents the K Nearest Neighbours algorithm, what it does and how it does it. After a discussion about possible issues with the aforementioned algorithm (section \ref{subsec:cluster_knn_curse}), some solutions in the form of Kd-trees (section \ref{subsec:cluster_knn_kdtree}) and ball trees (section \ref{subsec:cluster_knn_balltree} this) are presented. Finally, section \ref{sec:cluster_applications} presents some applications to clustering.
 
 \section{What is clustering?}
 \label{sec:cluster_what}
 
-What is clustering
+Clustering is one of the many fundamental tasks in data mining which falls in the unsupervised learning category (section \ref{sec:ml_types}). The goal of clustering is finding sets of categories within a dataset \cite{clustering}, which as a group are very similar to one another. By grouping similar items together, they can be classified and by extension, new and similar items are classified similarly to their neighbours.
 
-\subsection{Categorisation}
-\label{subsec:cluster_what_category}
+Clustering algorithms have different notions on what a cluster is. Due to this, many methods have been devised, of which the main ones are hierarchical methods and partitioning methods. However, the categorisation is still a subject of discussion, with Han and Kambar (2001) suggesting the main categories of clustering should be \textit{density-based methods, model-based clustering and grid-based methods}.
 
-Types of clustering methods.
+Hierarchical methods can be done in a top-down or bottom-up fashion and these methods can be further divided into \cite{clustering}:
+
+\begin{itemize}
+\item{Agglomerative hierarchical clustering: clusters are created by merging;}
+\item{Divisive hierarchical clustering: clusters are created by dividing.}
+\end{itemize} 
 
 \section{K-nearest neighbours}
 \label{sec:cluster_knn}
 
-What type is it, where is it used
+The \textbf{K} \textbf{N}earest \textbf{N}eighbours (KNN) algorithm separates a dataset of points into $n$ clusters by looking at the closest $k$ categorised objects \cite{knn}. Suppose there is an item $x$ which needs to be categorised and in its close vicinity there are a certain number of items which are already part of a category. Then the most probable outcome is that $x$ is also a part of that category.
+
+The algorithm operates in 4 steps \cite{knn}:
+
+\begin{enumerate}
+\item{A $k$ (positive integer) is specified, along with a new entry}
+\item{Select $k$ closest categorised entries}
+\item{Determine the most commonly found classification among these entries}
+\item{Assign that class to the new entry}
+\end{enumerate}
 
 \subsection{Curse of dimensionality}
 \label{subsec:cluster_knn_curse}
 
-What is this
+A main problem of the \textbf{KNN} algorithm is selecting those $k$ closest neighbours. A naive method, which implements an iterative search has a complexity of \textbf{O(N)} on insertion operations. 
+
+An alternative implementation is selecting all neighbours from a $\delta$ distance from the new entry, which can then result in space partitioning based on their coordinates. So, when searching new elements, one has to look only at its neighbouring partitions. However, while that may sound efficient, the number of neighbours is $3^d$, where $d$ is the dimension of the hyperspace. While this seems like a comparison between an item-based complexity versus a dimension-based complexity of the problem, there is an additional aspect to consider. 
+
+Suppose $d=2$, which means inserting a new item requires searching in a square of size $(3\delta)^2$ with 9 paritions for elements which are in a circle of radius $\delta$. The chance of finding the required elements on average is 
+\[ \frac{\pi \delta^2}{9 \delta ^ 2} = \frac{\pi}{9} \]
+
+For $d=3$, the chance becomes
+\[ \frac{\frac{4}{3} \pi \delta^2}{27 \delta^3} = \frac{4 \pi}{81 \delta} \]
+
+As the number of dimension increase, the chance, which is the volume of the hypersphere with a radius of $\delta$ over the volume of the hypercube of size $3\delta$, converges to zero. Which means as the number of dimensions increases, the chance of finding relevant neighbours decreases. This is called the curse of dimensionality \cite{curse}.
 
 \subsection{K-d tree}
 \label{subsec:cluster_knn_kdtree}
@@ -37,13 +60,3 @@ Why does this improve further
 \label{sec:cluster_applications}
 
 Applications for categorisation
-
-\subsection{Classification}
-\label{subsec:cluster_applications_classification}
-
-Applications in classification
-
-\subsection{Recommender Systems}
-\label{subsec:cluster_applications_recommenders}
-
-Applications in recommender systems
