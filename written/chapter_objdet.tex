@@ -1,12 +1,14 @@
 \chapter{Object detection}
 \label{chap:obj}
 
-This chapter is for cnn and object recognition
+This chapter is dedicated to neural networks, the machine learning model used for object detection. Section \ref{sec:obj_what} defines what object detection means and how a typical task should perform. What follows are three sections, each focusing on different types of neural networks: section \ref{sec:obj_nn} focuses on basic knowledge about neural networks in general, section \ref{sec:obj_cnn} dives into specifics when it comes to image recognition with convolutional neural networks being highlighted and section \ref{sec:obj_resnet} attempts to further improve on object detection by fixing a problem in deep layered networks.
 
 \section{What is object detection?}
 \label{sec:obj_what}
 
-HM?
+Object detection is a task in computer vision which focuses on identifying objects in digital photographs. Even though it is a computer vision task, it can be also classified as an artificial intelligence (or even machine learning) task since most recent research has been performed with neural networks. 
+
+It is a supervised (section \ref{sec:ml_types}), prediction (section \ref{sec:ml_goals}) task. It is supervised because it relies on a pre-labelled, training dataset in order to improve, which automatically makes it a prediction task. The training dataset usually contains a set of fixed size images as input and a list of objects as desired outputs. Most trained object detection models which rely on the neural network architecture will predict the objects with a chance of confidence or probability.
 
 \section{Neural networks}
 \label{sec:obj_nn}
@@ -98,7 +100,7 @@ Similar to the convolution operator, pooling layers reduce the image space using
 
 \begin{figure}[b!]
 \centering
-\includegraphics[width=0.7\textwidth]{pool_max}
+\includegraphics[width=0.6\textwidth]{pool_max}
 \caption{Max pooling selects the biggest value in a the sliding window and reduces it to a single output}
 \label{fig:pool_max}
 \end{figure}
@@ -106,4 +108,17 @@ Similar to the convolution operator, pooling layers reduce the image space using
 \section{Residual networks}
 \label{sec:obj_resnet}
 
-This is a section dedicated to Residual networks \cite{resnet}
+All successful models for object detection and image recognition have in common a deep-layered structure. However, after many convolutional layers, the network is affected by degradation, which is not caused by overfitting or other normal aspects and unintuively, the network has a higher error the more layers it has. Research has shown that the degradation process is visible when comparing deep models with shallower ones with the first obtaining better results \cite{resnet}.
+
+Resideual networks attempt to solve this problem by letting older layers directly influence the result of newer ones. Once every few layers, the output of a layer is constructed in the usual manner, with weights and an activation function, but the result from a previous mapping using the identity function as activation function directly influences the output of the layer \cite{resnet}. Figure \ref{fig:resnet} illustrates a simple two layered structure where the second layer is residual.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.3\textwidth]{resnet}
+\caption{Two layers, with the second being a residual and allowing the output of a previous layer to influence the result before the activation function is used \cite{resnet}}
+\label{fig:resnet}
+\end{figure}
+
+An experiment showed that, on the same dataset, a 18-layer has a lower error than its 34 counterpart. Using a deep residual neural network, not only it had a lower error, but it also solved the problem of shallower models obtaining better results \cite{resnet}.
+
+
