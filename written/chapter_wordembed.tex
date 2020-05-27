@@ -1,38 +1,83 @@
 \chapter{Word Embeddings}
 \label{chap:words}
 
-This section is dedicated to word embeddings
+This chapter is dedicated to word embeddings, but mainly to word2vec. Section \ref{sec:words_what} answers the simple question of what are word embeddings. Section \ref{sec:words_word2vec} presents the justification for word2vec as an embedding architecture and section \ref{sec:words_creation} goes into detail into how such a model is constructed. Finally, in section \ref{sec:words_operations} exemplifies some use cases.
 
 \section{What are word embeddings?}
 \label{sec:words_what}
 
-What are? (Maybe merge with Word2vec section)
+The main focus of \textbf{N}atural \textbf{L}anguage \textbf{P}rocessing (NLP) domain is text processing. It ranges from text translation to syntax and grammar checking, covering everything related to text. One particular task of this artificial intelligence field is word embeddings.
+
+Word embeddings represent string mappings to points in a vector space in order to allow mathematical operations on them. Given a set of words and a dimension $d$ of a hyperspace, for a word embedding to be valid there must exist a mapping function $f$ which performs the transformation $$ f(word) = (x_1, x_2, ... , x_d),  \forall word \in vocabulary$$. 
+
+Depending on the task in question, the mapping function differs. Table \ref{table:embedding} illustrates an example the function maps animals into a vector space where each dimension represents a type of animal.
+
+\begin{table}[b!]
+\centering
+\label{table:embedding}
+\begin{tabular}{| | c c c | |}
+	\hline
+		 Word & Feline & Canine \\
+	\hline
+		Dog & 0 & 1 \\
+		Cat  & 1 & 0 \\
+		Lion & 1 & 0 \\
+		Wolf & 0 & 1 \\
+\hline
+\end{tabular}
+\caption{A word embedding based on the animal type}
+\end{table}
 
 \section{Word2Vec}
 \label{sec:words_word2vec}
 
-What is word2vec
+Many NLP systems today treat words as simple atomic units. While this has its advantages on memory, it does not allow for a lot of operations which might prove useful in certain tasks. Current systems implement N-grams \cite{word2vec}, which is effectively just a tuple of $N$ words as a sliding progresses through the whole text.
+
+The goal of word2vec is to introduce a model which can be used for learning high-quality word vectors from huge vocabulary datasets. The main problem of current models is complexity, and do not allow training for billions of words in reasonable time \cite{word2vec}. Another reason for using word2vec is mathematical analysis on words from a corpus. It is able to implement similarity functions, which output corresponding words, regardless of the context, but according to the trained corpus. A now famous example of word2vec capabilities shows that it manages associate words based on examples. The following operations are valid in this model:
+$$ v("\textit{King}") - v("\textit{Man}") + v("\textit{Woman}") \approx v("\textit{Queen}") $$
+$$ v("\textit{Romania}") - v("\textit{Bucharest}") + v("\textit{Paris}") \approx v("\textit{France}") $$
+
+As it uses a corpus dataset for training, it is a supervised (section \ref{sec:ml_types}) prediction (section \ref{sec:ml_goals}) task.
 
 \section{Creation process}
 \label{sec:words_creation}
 
-How are they created
-
-\subsection{Skip-gram method}
-\label{subsec:words_creation_skipgram}
-
-How skipgram works
+The original paper on word2vec presents two methods for constructing a word2vec from a corpus \cite{word2vec}. As stated in section \ref{sec:obj_resnet}, neural networks run into a degradation problem when they contain too many layers. For fast and efficient training, most models implement a neural network with a single projection layer. There two types of models, skip-gram and continuous bag of words, each relying on a neural network architecture, but in different ways.
 
 \subsection{Continuous Bag of Words (CBOW)}
 \label{subsec:words_creation_cbow}
 
-How cbow works
+\textbf{C}ontinous \textbf{B}ag \textbf{O}f \textbf{W}ords (CBOW) is a model relying on feedforward neural network language model (which is a simple neural network adjusted for word inputs) but instead of having a layers, it contains a simple projection layer. Its main scope is trying to determine a word based on a sliding window or a "\textit{bag}" of words (it is called a bag because order is irrelevant). The words considered are the ones in a close vicinity to the target word \cite{word2vec}. Figure \ref{fig:cbow} illustrates a simple architecture of CBOW.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.5\textwidth]{cbow}
+\caption{CBOW model predicts the current word based on context}
+\label{fig:cbow}
+\end{figure}
+
+\subsection{Skip-gram method}
+\label{subsec:words_creation_skipgram}
+
+Skip-gram is a model which operates similar to CBOW, but instead of averaging multiple inputs, it tries to deduce neighbours of a word from a single input. From the perspective, it can be considered as doing the opposite of what a CBOW model does. Figure \ref{fig:skipgram} illustrates a simple architecture of skip-gram.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.5\textwidth]{skipgram}
+\caption{Skip-gram model deduces the context from a word}
+\label{fig:skipgram}
+\end{figure}
 
 \section{Operations}
 \label{sec:words_operations}
 
-Type of operations allowed on the word2vec model
+Word2vec models allow many operations which are used on points in vector spaces in general. This includes:
 
+\begin{itemize}
+\item{Arithmetic operations: addition and subtraction are supported by projecting the operands in the vector space, then selecting the closest point to the resulted vector result (see section \ref{sec:words_word2vec};}
+\item{Similarity: various types of similarity functions are available, such as cosine similarity. The operation is performed on the words' projection;}
+\item{Neighbour querying: by providing an input word, it is able to return a list of words whose projections are closest to the input's projection.}
+\end{itemize}
 
 
 
