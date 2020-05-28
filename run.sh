@@ -1,5 +1,5 @@
 set -e
-python compute_membership.py
+python build_tree.py
 set +e
 
 if [ "$1" = "debug" ] ; then

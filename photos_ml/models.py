@@ -1,5 +1,6 @@
 import os
 
+import numpy as np
 from django.conf import settings
 from django.db import models
 
@@ -24,6 +25,7 @@ class EnvironmentFuzzyMembership(models.Model):
 class Photo(models.Model):
     name = models.CharField(max_length=255, default='', unique=True)
     vector = models.ManyToManyField('PhotoEnvironment', through='EnvironmentFuzzyMembership')
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -43,9 +45,9 @@ class Photo(models.Model):
         return os.path.join(settings.IMAGE_PATH, self.name)
 
     def get_vector(self):
-        return [f.value for f in EnvironmentFuzzyMembership.objects.filter(photo=self).order_by('environment_id')]
+        return [f.value for f in EnvironmentFuzzyMembership.objects.filter(photo=self).order_by('environment_id') if f.environment.active]
 
     def get_dict_vector(self):
-        return [(f.environment.display_name, f.value) for f in EnvironmentFuzzyMembership.objects.filter(photo=self).order_by('environment_id')]
+        return [(f.environment.display_name, f.value) for f in EnvironmentFuzzyMembership.objects.filter(photo=self).order_by('environment_id') if f.environment.active]
 
     get_dict_vector.__name__ = 'Vector'

@@ -1,10 +1,5 @@
-import os
+import init # NOQA
 
-import django
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'dissertation.settings'
-django.setup()
-
-from photos_ml.tasks import build_tree # NOQA
+from photos_ml.tree_tasks import build_tree # NOQA
 
 build_tree()

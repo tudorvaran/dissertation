@@ -1,13 +1,10 @@
 import os
-import pickle
 
 import gensim
 import numpy as np
 import structlog
 from django.conf import settings
-from django.core.cache import cache
 from imageai.Detection import ObjectDetection
-from sklearn.neighbors import BallTree
 
 from photos_ml.models import Photo, EnvironmentFuzzyMembership, PhotoEnvironment
 
@@ -53,7 +50,7 @@ def build_vectors(ignore_existing=False):
             os.unlink(tmp_file)
         os.symlink(photo.get_input_path(), tmp_file,)
 
-        logger.info("Detecting", name=photo.name)
+        logger.info("Detecting", name=photo.name, id=photo.pk)
         detections = detector.detectObjectsFromImage(
             input_image=tmp_file,
             output_image_path=new_tmp_file
@@ -88,7 +85,7 @@ def build_vectors(ignore_existing=False):
             logger.warning("No objects detected in photo", id=photo.id, name=photo.name)
             continue
 
-        for env in PhotoEnvironment.objects.filter(active=True):
+        for env in PhotoEnvironment.objects.all():
             wv_results = [1 - np.average(word2vec_model.wv.distances(env.name, detection["name"].split(' '))) for
                           detection in
                           detections]
@@ -109,18 +106,3 @@ def build_vectors(ignore_existing=False):
                     value=0.0,
                     **kwargs
                 )
-
-
-def build_tree():
-    logger.info("Building tree...")
-
-    photo_list = [photo for photo in Photo.objects.all().order_by('pk') if photo.exists() and len(photo.get_vector())]
-    id_mapping = [photo.id for photo in photo_list]
-    vectors = np.array([
-        photo.get_vector() for photo in photo_list
-    ])
-    tree = BallTree(vectors)
-    cache.set("tree", pickle.dumps(tree))
-    cache.set("index", pickle.dumps(id_mapping))
-
-
