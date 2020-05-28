@@ -138,6 +138,7 @@ testing/
 *.jpg
 *.h5
 *.bin
+*.json
 
 # written part
 *.aux

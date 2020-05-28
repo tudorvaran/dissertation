@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 import testing
 
@@ -22,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('django-rq/', include('django_rq.urls')),
     path('testing/', include('testing.urls')),
-    path('photos/', include('photos_ml.urls'))
+    path('photos/', include('photos_ml.urls')),
+    path('', RedirectView.as_view(url="/photos/"))
 ]
