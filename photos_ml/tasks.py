@@ -17,13 +17,15 @@ logger = structlog.get_logger()
 def sync_picture_directory():
     total_created = 0
     for photo_name in os.listdir(settings.IMAGE_PATH):
+        if settings.IMAGE_LIMIT and Photo.objects.count() >= settings.IMAGE_LIMIT:
+            break
         if photo_name.split('.')[1] in ['mp4', 'gif', 'DS_Store']:
             continue
         photo, was_created = Photo.objects.get_or_create(name=photo_name)
         if was_created:
             total_created += 1
 
-    logger.info("Finished sync process", count=total_created)
+    logger.info("Finished sync process", count=total_created, photo_count=Photo.objects.count())
 
 
 def build_vectors(ignore_existing=False):
