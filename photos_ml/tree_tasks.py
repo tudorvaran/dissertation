@@ -16,14 +16,19 @@ logger = structlog.get_logger()
 
 def build_tree():
     logger.info("Building tree...")
+    limit = settings.RECOMMENDER_ITEMS_LIMIT
 
-    photo_list = [photo for photo in Photo.objects.all().order_by('pk') if photo.exists() and photo.get_vector()]
-    photo_list = photo_list[:settings.RECOMMENDER_ITEMS_LIMIT]
+    photo_list = [photo for photo in Photo.objects.filter(active=True).order_by('pk') if photo.exists() and photo.get_vector()]
+    if limit:
+        logger.info("Not selecting photo", id=photo_list[limit].pk)
+        photo_list = photo_list[:limit]
+
     id_mapping = [photo.id for photo in photo_list]
     vectors = np.array([
         np.array(photo.get_vector()) for photo in photo_list
     ])
     tree = BallTree(vectors)
+
     cache.set("tree", pickle.dumps(tree))
     cache.set("index", pickle.dumps(id_mapping))
     logger.info("Done!")

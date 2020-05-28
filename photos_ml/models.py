@@ -25,6 +25,7 @@ class EnvironmentFuzzyMembership(models.Model):
 class Photo(models.Model):
     name = models.CharField(max_length=255, default='', unique=True)
     vector = models.ManyToManyField('PhotoEnvironment', through='EnvironmentFuzzyMembership')
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

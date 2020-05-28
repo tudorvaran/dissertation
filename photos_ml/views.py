@@ -12,7 +12,7 @@ from photos_ml.utils import get_recommender
 def homepage(request):
     photo_ids = []
     min_pk = Photo.objects.all().order_by("pk").first().pk
-    max_pk = min_pk + settings.RECOMMENDER_ITEMS_LIMIT
+    max_pk = Photo.objects.all().order_by("-pk").first().pk
 
     while len(photo_ids) < settings.HOMEPAGE_PICTURES:
         random_id = random.randint(min_pk, max_pk)

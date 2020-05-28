@@ -20,8 +20,6 @@ import environ
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 env = environ.Env(DEBUG=(bool, True))
 
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -166,4 +164,4 @@ VALIDATION_FILE = env.str('VALIDATION_FILE', default='panoptic_val2017.json')
 EVALUATION_RESULTS_FILE = env.str('EVALUATION_RESULTS_FILE', default='results.json')
 
 HOMEPAGE_PICTURES = env.int('HOMEPAGE_PICTURES_COUNT', default=30)
-RECOMMENDER_ITEMS_LIMIT = env.int('RECOMMENDER_ITEMS_LIMIT', default=150)
+RECOMMENDER_ITEMS_LIMIT = env.int('RECOMMENDER_ITEMS_LIMIT', default=None)
