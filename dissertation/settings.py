@@ -161,3 +161,5 @@ PHOTOS_INPUT_PATH = env.str('PHOTOS_INPUT_PATH', default=os.path.join(BASE_DIR, 
 PHOTOS_OUTPUT_PATH = env.str('PHOTOS_OUTPUT_PATH', default=os.path.join(BASE_DIR, 'photos_ml', 'photos_output'))
 
 IMAGE_PATH = env.str('IMAGE_PATH', default=PHOTOS_INPUT_PATH if not SHOW_DEBUG_IMAGES else PHOTOS_OUTPUT_PATH)
+
+IMAGE_LIMIT = 150  # Because the building dataset is a time-consuming operation, set an upper limit for experimenting
