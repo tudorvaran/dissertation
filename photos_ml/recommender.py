@@ -1,12 +1,16 @@
 class Recommender:
-    def __init__(self, tree, index_list):
+    def __init__(self, tree, scaler, index_list):
         self.tree = tree
+        self.scaler = scaler
         self.index_list = index_list
 
     def flatten(self, lst):
         return [item for sublst in lst for item in sublst]
 
     def recommend(self, vectors, k, exclude_index=None):
+        if self.scaler:
+            vectors = self.scaler.transform(vectors)
+
         distances, leafs = self.tree.query(vectors, k=k + 1, return_distance=True)
 
         distances = self.flatten(distances)

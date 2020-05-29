@@ -161,7 +161,7 @@ IMAGE_PATH = env.str('IMAGE_PATH', default=PHOTOS_INPUT_PATH if not SHOW_DEBUG_I
 IMAGE_LIMIT = env.int('IMAGE_LIMIT', default=None)  # Because the building dataset is a time-consuming operation, set an upper limit for experimenting
 
 VALIDATION_FILE = env.str('VALIDATION_FILE', default='panoptic_val2017.json')
-EVALUATION_RESULTS_FILE = env.str('EVALUATION_RESULTS_FILE', default='results.json')
 
 HOMEPAGE_PICTURES = env.int('HOMEPAGE_PICTURES_COUNT', default=30)
 RECOMMENDER_ITEMS_LIMIT = env.int('RECOMMENDER_ITEMS_LIMIT', default=None)
+RECOMMENDER_SCALER = env.str('SCALER', default=None)
