@@ -19,7 +19,7 @@ def homepage(request):
 
         photo = Photo.objects.filter(pk=random_id).first()
 
-        if photo:
+        if photo.get_vector():
             photo_ids.append(random_id)
 
     context = dict(
@@ -70,7 +70,7 @@ def query_view(request):
     items = recommender.recommend([photo.get_vector()], k=k+1, exclude_index=photo_id)
 
     context = dict(
-        main_photo_id=photo_id,
+        main_photo=photo,
         photos=items,
         k=k
     )

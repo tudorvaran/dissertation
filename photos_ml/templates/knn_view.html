@@ -6,7 +6,10 @@
 </head>
 <body>
     <a href="/"> Home </a> | <a href="/admin"> Administration page </a> <hr>
-    <img src="/photos/media/?id={{ main_photo_id }}" width=500 height=500 /><hr>
+    <img src="/photos/media/?id={{ main_photo.id }}" width=500 height=500 />
+    <p> Objects: {{ main_photo.get_objects }} </p>
+    <p> Vector: {{ main_photo.get_vector }} </p>
+    <hr>
     {% for photo in photos %}
         <a href="/photos/query/?id={{ photo.i }}&k={{ k }}">
             <img src="/photos/media/?id={{ photo.i }}" alt="ID={{photo.i}}, D={{photo.d}}" width=300 height=300 />
