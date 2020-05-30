@@ -5,7 +5,17 @@ from .models import Photo, PhotoEnvironment, EnvironmentFuzzyMembership, ObjectC
 
 # Register your models here.
 admin.site.register(ObjectCategory)
-admin.site.register(ObjectIdentification)
+
+
+@admin.register(ObjectIdentification)
+class ObjectIdentificationAdmin(admin.ModelAdmin):
+    list_display = ['image', 'category', 'confidence']
+
+    def image(self, obj):
+        return mark_safe(f"<img src=/photos/media/?id={obj.photo.id} width='50' height='50' />")
+
+    image.allow_tags = True
+    image.__name__ = 'Image'
 
 
 @admin.register(PhotoEnvironment)
