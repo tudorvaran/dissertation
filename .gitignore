@@ -154,3 +154,6 @@ testing/
 *.ps
 written/img
 
+# postgresql backups
+*.dump
+
