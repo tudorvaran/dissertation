@@ -21,9 +21,9 @@ However, object detection models which use neural networks are only capable of g
 
 In order to further reduce dimensions, the object names can be reduced by being associated with certain environments. And there are models which do such that to some degree. Word2vec transforms a word into a multidimensional vector \cite{word2vec}, which can then have certain operations performed on it in comparison with other words, such as similarity. This can prove as a good solution to reducing dimensions.
 
-In fuzzy logic, the membership of an entity to a set is not measured as being black or white, but as a number from 0 to 1. Using word2vec similarity operator as a fuzzy function can prove useful in obtaining a general membership of a picture to a certain theme. The only problem standing is selecting themes and choosing the right words to describe them.
+Using word2vec similarity operator as a mapping function can prove useful in obtaining a general membership of a picture to a certain theme. The only problem standing is selecting themes and choosing the right words to describe them.
 
-To summarize: the photo to point transformation process starts by processing an input image, identifying its objects, then performing a weighted average of fuzzy membership of each word to a certain theme (where the theme is a word and the fuzzy function is the similarity function from the word2vec model). Finally, by having $N$ themes, each photograph is mapped into a $N$-dimensional hyperplane (figure \ref{fig:photo2point}).
+To summarize: the photo to point transformation process starts by processing an input image, identifying its objects, then performing a weighted average of mapping of each word to a certain theme (where the theme is a word and the mapping function is the similarity function from the word2vec model). Finally, by having $d$ themes, each photograph is mapped into a $d$-dimensional hyperplane (figure \ref{fig:photo2point}).
 
 \begin{figure}[b!]
 \centering
@@ -35,24 +35,46 @@ To summarize: the photo to point transformation process starts by processing an 
 \section{Solution formalisation}
 \label{sec:approach_formal}
 
-Will write equations and stuff
+Let $x \in X$ be a photograph from the dataset $X$ and $d$ be the number of dimensions of the hyperplane. In order to map the input image $x$ to a hyperplane coordinate, a function $map$ should be defined as follows:
+$$ map : X \mapsto \mathbf{R}^{d} $$
+
+Now, as discussed in section \ref{sec:approach_general}, the mapping procedure is composed of 2 smaller sub-procedures: the first one maps the input image into a set of words (section \ref{subsec:approach_formal_obj}) while the second one maps the set of words into hyperdimensional points in the plane using a set of keywords (section \ref{subsec:approach_formal_word2vec}). So, the maping function  should reflect this:
+
+$$ map : X, \bigtimes_{i=1}^{d}{vocabulary} \mapsto $$ $$ \mapsto \{(word, conf) | word \in vocabulary, conf \in [0, 100]\}, vocabulary \mapsto \mathbf{R}^{d} ,$$
+and has the form:
+$$ map(x, keywords) = det2point(obj2det(x), keywords) $$
 
 \subsection{Object detection}
 \label{subsec:approach_formal_obj}
 
-Formalisation of the object detection process
+A object detection model is able to identify objects in a certain image with a certain grade of confidence, typically in the interval $[0, 100]$. As mentioned in section \ref{sec:approach_formal}, in the definition of the $map$ function, the object detection function should have the following definition (the keywords are not used, so the second input variable can be safely excluded):
+$$ img2obj : X \mapsto \{(word, conf) | word \in vocabulary, conf \in [0, 100]\} $$
+
+As to how the $img2obj$ function exactly works, that can be considered a blackbox on paper, because in a practical situation it can be any neural network which depends on multiple, trainable weights, thus making it impossible to be described on paper.
 
 \subsection{Word2Vec}
 \label{subsec:approach_formal_word2vec}
 
-Formalisation of the word to vector conversion
+The object detection function outputs a set of words, each with a certain grade of confidence. Using these and a tuple $keywords \in \bigtimes_{i=1}^{d}{vocabulary}$ as inputs for the function $det2point$, the second part of hyperplane mapping is performed, which will be presented in detail in this section.
 
-\subsection{Clustering}
+Recall from chapter \ref{chap:words} that word embeddings have the role of mapping words into coordinate in plane. Which means, there exists a function $word2vec : vocabulary \mapsto \mathbf{R}^{d_{word2vec}} $, where $d_{word2vec} \in \mathbf{N^{*}}$ is the dimension of the model's hyperplane.
+
+As mentioned in section \ref{sec:approach_general}, a similarity function between two word2vec mappings is used for the final mapping. The most commonly used similarity function is the cosine similarity function $cos(\theta) = \frac{a b}{|| a || || b ||} $. 
+
+Let $w_1, w_2 \in vocabulary$, where $w_1$ is a word from the object detection set and $w_2 \in keywords$. Then, the theme mapping function is defined as:
+$$ map_{word}(w_1, w_2) =  \frac{word2vec(w_1), word2vec(w_2)}{|| word2vec(w_1) || \cdot || word2vec(w_2) ||} $$
+
+But this is just one pair of words. At this step, the inputs are the objects detected in the image with their respective grade of confidence and a set of keywords. To fully map the input to each themed dimension from the keywords, the similarity function is applied for all pairs. Since the object detection provides a grade of confidence of each detection, that can be used to prevent the model in becoming too confident on a mapping based on inaccurate data. Thus, the theme mapping applied on the out from the object detection process is $ det2point(det, keyword) = (y_1, y_2, ..., y_d) $, where 
+$$ y_i = avg_{w}(map_{word} (det_{words}, keyword_i) , det_{conf} ) ,$$
+
+where $avg_{w}(x, w) = \frac{x_1 w_1 + x_2 w_2 + ... + x_n w_n}{\sum_{i=1}^{n}{w_i}}$ is the weighted average of the vector $x \in \mathbf{R}^n$ with the weights $w \in \mathbf{R}^n$ and $map_{word} (v, w)$ is the vector resulted from applying $map_{word}$ on each item $v_i$ in the vector on the word $w$.
+
+\subsection{Cluster querying}
 \label{subsec:approach_formal_cluster}
 
-Define the clustering process using ball trees
+When going through all the steps in sections \ref{subsec:approach_formal_obj} and \ref{subsec:approach_formal_word2vec}, the mapping result is associated to the input photo, but in order for recommendations to work, the operations, which will be performed on the output hyperdimensional space, will result in a vector which is also part of said space, need to be mapped back. Mathematically speaking, assume that $\forall x_1, x_2 \in X \implies map(x_1, keywords) \neq map(x_2, keywords)$. Which allows the definition of the inverse function $map^{-1} : \{ map(x) | \forall x \in X \} \mapsto X$. Since the keywords are already known, their output value can be ignored safely.
 
-\subsection{Querying}
-\label{subsec:approach_formal_query}
-
-Define how a query works
+Then, a recommendation $rec: X \mapsto X$ for an input image $x$ is defined as:
+$$rec(x, K) = map^{-1}(nn(map(x, keywords), K)),$$
+where $nn(v, K)$ returns the closest $K$ vectors to input vector $v$ using the euclidean distance metric:
+$$ dist(a, b) = \sqrt[d]{\sum_{i=1}^{d}{(a_i - b_i)^2}} $$
