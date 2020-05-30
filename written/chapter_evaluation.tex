@@ -1,7 +1,23 @@
 \chapter{Results and evaluation}
 \label{chap:results}
 
-This chapter is dedicated to the evaluation of the application
+This chapter is dedicated to the evaluation of the approach. Section \ref{sec:results_eval} presents the evaluation methodology and some how some precision functions work. The next sections will focus on trying multiple models or adding scalers to the input data. The first two section, section \ref{sec:results_obj} and \ref{sec:results_word2vec} detail what happens when changing the object detection model and word2vec model, respectively. Section \ref{sec:results_fuzzy} dives into dimensions and shows how dimensions influence the precision. The next focus of experiments will be on using scalers, which is detailed in section \ref{sec:results_scaler}. Finally, a short discussion about the result can be found in section \ref{sec:results_discussion}.
+
+\section{Evaluation}
+\label{sec:results_eval}
+
+Methodology
+
+
+\subsection{Mean average precision}
+\label{subsec:results_eval_map}
+
+How it works
+
+\subsection{Precision at k}
+\label{subsec:results_eval_patk}
+
+How it works
 
 \section{Object detection models}
 \label{sec:results_obj}
@@ -21,15 +37,7 @@ What happens when using different fuzzy memberships (changing main words etc.)
 \section{Scaler}
 \label{sec:results_scaler}
 
-I haven't decided yet, but I might use a scaler for data if I have enough time to do this.
-
-\section{Random starting points}
-To improve variety, maybe use random points in close vicinity of input picture.
-
-\section{Evaluation}
-\label{sec:results_eval}
-
-Methodology used for evaluation. Maybe some precision functions such as P@K or MAP, although P@K is much more versatile.
+I used 4 scalers and almost nothing changed
 
 \section{Discussion}
 \label{sec:results_discussion}
