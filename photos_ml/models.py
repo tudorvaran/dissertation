@@ -1,6 +1,5 @@
 import os
 
-import numpy as np
 from django.conf import settings
 from django.db import models
 
@@ -25,6 +24,7 @@ class EnvironmentFuzzyMembership(models.Model):
 class Photo(models.Model):
     name = models.CharField(max_length=255, default='', unique=True)
     vector = models.ManyToManyField('PhotoEnvironment', through='EnvironmentFuzzyMembership')
+    objects = models.ManyToManyField('ObjectCategory', through='ObjectIdentification')
     active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -50,4 +50,25 @@ class Photo(models.Model):
     def get_dict_vector(self):
         return [(f.environment.display_name, f.value) for f in EnvironmentFuzzyMembership.objects.filter(photo=self).order_by('environment_id') if f.environment.active]
 
+    def get_objects(self):
+        return [(identification.category.name, identification.confidence) for identification in ObjectIdentification.objects.filter(photo=self)]
+
     get_dict_vector.__name__ = 'Vector'
+    get_objects.__name__ = 'Objects'
+
+
+class ObjectCategory(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ObjectIdentification(models.Model):
+    category = models.ForeignKey('ObjectCategory', on_delete=models.CASCADE)
+    photo = models.ForeignKey('Photo', on_delete=models.CASCADE)
+    confidence = models.FloatField()
+
+    def __str__(self):
+        return f"{self.photo} -> {self.category} ({'%.2f' % self.confidence})"
+

@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-from .models import Photo, PhotoEnvironment, EnvironmentFuzzyMembership
+from .models import Photo, PhotoEnvironment, EnvironmentFuzzyMembership, ObjectCategory, ObjectIdentification
 
 
 # Register your models here.
+admin.site.register(ObjectCategory)
+admin.site.register(ObjectIdentification)
 
 
 @admin.register(PhotoEnvironment)
@@ -13,7 +15,7 @@ class PhotoEnvironmentAdmin(admin.ModelAdmin):
 
 @admin.register(Photo)
 class PhotoAdmin(admin.ModelAdmin):
-    list_display = ['name', 'id', 'image', 'get_dict_vector']
+    list_display = ['name', 'id', 'image', 'get_dict_vector', 'get_objects']
     readonly_fields = ['id', 'name', 'larger_image']
 
     def image(self, obj, w=50, h=50):
@@ -37,4 +39,5 @@ class EnvironmentFuzzyMembershipAdmin(admin.ModelAdmin):
 
     image.allow_tags = True
     image.__name__ = 'Image'
+
 

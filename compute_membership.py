@@ -1,6 +1,4 @@
-import init # NOQA, initialize django APP
+import init # NOQA
+from photos_ml.object_detection_tasks import create_fuzzy_vectors
 
-from photos_ml.object_detection_tasks import build_vectors, sync_picture_directory  # NOQA
-
-sync_picture_directory()
-build_vectors()
+create_fuzzy_vectors()
