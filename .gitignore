@@ -157,3 +157,6 @@ written/img
 # postgresql backups
 *.dump
 
+# graphs and statistics
+*.png
+
