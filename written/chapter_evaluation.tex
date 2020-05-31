@@ -1,14 +1,14 @@
 \chapter{Results and evaluation}
 \label{chap:results}
 
-This chapter is dedicated to the evaluation of the approach. Section \ref{sec:results_eval} presents the evaluation methodology and some how some precision functions work. The next sections will focus on trying multiple models or adding scalers to the input data. The first two section, section \ref{sec:results_obj} and \ref{sec:results_word2vec} detail what happens when changing the object detection model and word2vec model, respectively. Section \ref{sec:results_dimensions} dives into dimensions and shows how dimensions influence the precision. The next focus of experiments will be on using scalers, which is detailed in section \ref{sec:results_scaler}. Finally, a short discussion about the result can be found in section \ref{sec:results_discussion}.
+This chapter is dedicated to the evaluation of the approach. Section \ref{sec:results_eval} presents the evaluation methodology and some how some precision functions work. The next sections will focus on trying multiple models or adding scalers to the input data. The first two sections, \ref{sec:results_obj} and \ref{sec:results_word2vec}, detail what happens the object detection model and word2vec model, respectively, are changed. Section \ref{sec:results_dimensions} dives into the hyperplane and shows how dimensions influence the precision. The next focus of experiments will be on using scalers, which is detailed in section \ref{sec:results_scaler}. Finally, a short discussion about the results obtained is in section \ref{sec:results_discussion}.
 
 \section{Evaluation}
 \label{sec:results_eval}
 
-Because this is an unsupervised approach, there is no definitive truth to compare it to. However, there are photograph datasets online which are pre-labelled, most notably the \textbf{C}ommon \textbf{O}bjects in \textbf{Co}ntext (COCO) datasets \cite{coco}. They contain over 200.000 labelled images with about 100 object categories. For the following experiments, the 2017 validation images dataset has been chosen, with exactly 5.000 pre-labelled pictures.
+Because this is an unsupervised approach, there is no definitive truth to compare it to. However, there are photograph datasets online which are pre-labelled, most notably the \textbf{C}ommon \textbf{O}bjects in \textbf{Co}ntext (COCO) datasets \cite{coco}. They contain over 200.000 labelled images with about 100 object categories. For the following experiments, the 2017 validation images dataset has been chosen, with exactly 5.000 pre-labelled pictures due to time constraints (object detection takes 2 seconds on average per image).
 
-By having some notion of ground truth, some ideas to comparison can arise from this. The system relies on recommending pictures with similar objects and content and the dataset is labelled with these. One solution would be to create another $map'$ function for this dataset based on the image annotations. Let $map' : X \mapsto \mathbf{N}^{card(categories)} $ be the definition of the function, where $card(categories)$ represents the number of categories found in the labelled dataset. In this case the function is simply 
+By having some notion of ground truth, a comparison between this model and another can be made. The system relies on recommending pictures with similar objects and content and the dataset is labelled with these. One solution would be to define another $map'$ function, but, this time, based on the annotations. Let $map' : X \mapsto \mathbf{N}^{card(categories)} $ be the definition of the function, where $card(categories)$ represents the number of categories found in the labelled dataset. In this case, the function is simply: 
 $$ map'(x') = (y'_1, y'_2, ..., y'_{card(categories)}), y'_i = 
 	\begin{cases}
 		1 & \textrm{the i-th object in categories is in } x' \\
@@ -18,12 +18,12 @@ $$
 
 Now let's assume that the inverse function $map'^{-1}$ exists, which would allow recommendations to work:
 $$ rec'(x', K) = map'^{-1}(nn'(map'(x'), K)) $$
-then $rec'$ can be used to evaluate $rec$ (section \ref{subsec:approach_formal_cluster} to some degree. But, it order to do that, some precision functions specific for information retrieval must be mentioned first.
+then $rec'$ can be used to evaluate $rec$ (section \ref{subsec:approach_formal_cluster} to some degree. But, it order to do that, some precision functions specific for information retrieval must be mentioned first (sections \ref{subsec:results_eval_map} and \ref{subsec:results_eval_patk}.
 
 \subsection{Mean average precision}
 \label{subsec:results_eval_map}
 
-Mean average precision is an evaluation function used for measuring the precision of an information retrieval model. It relies on the fact the model outputs a number of values, which can be compared only directly by value if they are identical (words for example). In this case, the output is a list of images from the dataset $X$. 
+Mean average precision is an evaluation function used for measuring the precision of an information retrieval model. It relies on the fact that a model outputs a number of values, which can be compared only directly by value if they are identical (words for example). In this case, the output is a list of images from the dataset $X$. 
 
 Let $r = \{r_1, r_2, ..., r_{k_r}\} $ be a set of ranked recommendations given by $rec$ for an $x$ and $k_r$ and $r' = \{r'_1, r'_2, ... r_{k_{r'}}\} $ be the set of correct recommendations resulted from $rec'(x, k_{r'})$. Also, let 
 $$ r_{both} = \{ r_i | \forall r_i \in r, \exists r_j \in r' s.t. r'_j = r_i \} $$ 
@@ -40,7 +40,7 @@ $$P@K(k) = \frac{\textrm{number of items found in first k which are also in } r'
 \section{Object detection models}
 \label{sec:results_obj}
 
-Training an object detection model on consumer hardware is time-consuming and might take time to achieve acceptable results. While this is entirely possible to do, there are also pre-trained models, with their associated papers, available online. And if the input picture dataset is COCO, it is best to use a model specially tailored for it. 
+Training an object detection model on consumer hardware is time-consuming and might take time to achieve acceptable results. While this is entirely possible to do, there are also pre-trained models, with their associated papers, available online. Since the COCO dataset is used, the best fit for it is a model specifically trained on it.
 
 The ImageAI library, which has also been used in the application, makes available a model which relies on residual networks for object detection \cite{image-ai}. On the chosen dataset (COCO 2017 validation 5K images), it is able to identify at least one object in 4850 images ($97\%$ of the whole dataset).
 
@@ -56,9 +56,9 @@ The best dataset there is the one trained on Google News texts, which contains a
 
 This section focuses on the set of keywords and how it impacts the final results. Recall from sections \ref{subsec:results_eval_map} and \ref{subsec:results_eval_patk} how \textbf{m}ean \textbf{a}verage \textbf{p}recision (MAP) and P@k work. 
 
-To use these measurements, all input photographs have been queried for $k_{r'}= k_r =15$ entries. The keywords chosen are a subsets of the very general themes \{home, city, water, fun, food, sport, nature, animal\}. Because the number of subsets is large and would take days to test, the selection was performed in Monte Carlo simulation fashion: for each subset of $d < 8$ words, 8 random subsets were chosen as representatives.
+To use these measurements, all input photographs have been queried for $k_{r'}= k_r =15$ entries. The keywords chosen are subsets of the very general themes \{home, city, water, fun, food, sport, nature, animal\}. Because the number of subsets is large and would take days to test, the selection was performed in Monte Carlo simulation fashion: for each subset of $d < 8$ words, 8 random subsets were chosen as representatives.
 
-This experiment has shown that increasing the number of dimensions for the final hyperplane improves the quality of recommendations, as witnessed in figures \ref{fig:dims} and \ref{fig:dims_map}. By reference, selecting 15 random entries from the dataset as recommendations will result in a P@1 of $0.003$.
+This experiment has shown that increasing the number of dimensions for the final hyperplane improves the quality of recommendations, as witnessed in figures \ref{fig:dims} and \ref{fig:dims_map}. As reference, selecting 15 random entries from the dataset as recommendations will result in a P@1 of $0.003$.
 
 \begin{figure}[b!]
 \centering
@@ -83,7 +83,7 @@ This experiment has shown that increasing the number of dimensions for the final
 
 The final points of the hyperplane are randomly dispersed. Using scalers, the hyperplane can be further mapped into another which makes those points resemble certain distributions (such as Gaussian or uniform). However, for $d=8$ table \ref{table:scalers} shows that this does not improve the quality too much.
 
-The robust scaler transforms the points such that the 75th percentile are more packed to limit the influence of outliers, while the Gaussian and Uniform ones do exactly as their names say: they transform them to match the respective distributions
+The robust scaler transforms the points such that the 75th percentile are more packed to limit the influence of outliers, while the Gaussian and Uniform ones do exactly as their names say: they transform them to match the respective distributions.
 
 \begin{table}[b!]
 \centering
@@ -104,8 +104,8 @@ The robust scaler transforms the points such that the 75th percentile are more p
 \section{Discussion}
 \label{sec:results_discussion}
 
-While the methodology might not be ideal due to the algorithm being unsupervised, some sort of comparison can be made by creating a parallel recommender with ground truth data. While this project is compatible with a lot of models, there aren't many pre-trained ones which perform better than those used. The results of the word2vec models are especially underwhelming.
+While the methodology might not be ideal due to the algorithm being unsupervised, some sort of comparison can be made by creating a parallel recommender with ground truth data. This project is compatible with a lot of models, but there aren't many pre-trained ones which perform better than those used. The results of the word2vec models are especially underwhelming.
 
-The recommender works better than randomly selecting pictures from the dataset (MAP precision $.216$ vs $.003$). While there are a lot of variances and error-prone situations, the model performs rather well, even though the object detection model mislabels input and some word2vec relations do not always make sense.
+The recommender works better than randomly selecting pictures from the dataset (P@1 precision $.137$ vs $.003$). While there are a lot of variances and error-prone situations, the model performs rather well, even though the object detection model mislabels input and some word2vec relations do not always make sense.
 
-By increasing the number of dimensions of the hyperplane, the precision improves, but it is highly reliable on the keyword of each dimension, as seen in figures \ref{fig:dims}, \ref{fig:dims_map}. Scalers offer a way for re-placing points in plane to match a certain distribution based on the values on each dimension, but they have not shown to improve the overall results in a significant way
+By increasing the number of dimensions of the hyperplane, the precision improves, but it is highly reliable on the keyword of each dimension, as seen in figures \ref{fig:dims} and \ref{fig:dims_map}. Scalers offer a way for re-placing points in plane to match a certain distribution based on the values on each dimension, but they have not shown to improve the overall results in a significant way

@@ -1,11 +1,10 @@
 \chapter{Conclusion and future work}
 \label{chap:conclusion}
 
-This chapter is dedicated to conclusions and discussions
+This paper investigated how a recommender system for pictures based on the objects in them can be modelled. Most current solutions rely on manual labelling (or tagging) with words, which would then act just as search terms. This solution approached the problem from a different perspective, by attempting to map various-sized images into a hyperplane, using object detection and word similarity as intermediary steps. 
 
-\section{Future work}
-\label{sec:conclusion_future}
+Since the model is an unsupervised model, another recommender with ground truth data was used for validation. As described in section \ref{sec:results_scaler} the model obtained a precision at 1 (P@1) of $0.137$ (compared to $0.003$ if selecting random entries instead).
 
-What to improve. Mention scaler if haven't enough time to use it. Mention random points if haven't time to use them. Always to improve: membership words or object detection. 
+This project already has real-world applicability in the form of a website, but it relies on defining a set of keywords to act as dimensional labels. This is a topic that can be always be improved through continuous research to improve quality based on the selected set.
 
-Mention inclusion of face detection to show only pictures of a certain face. There are libraries but you were lazy to include them and since this more computer vision it's not the place to use them (since it adds a whole chapter on computer vision in the paper)
+Besides improving the precision of the model, another feature that can be added on top is face detection. It can be used to make distinctions between faces and recommending pictures with the same people in them. However, this subject adds extra complexity to the project and longer investigations are necessary on ways to integrate it.
