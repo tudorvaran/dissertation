@@ -6,8 +6,11 @@ fi
 #bibtex ""
 #pdflatex "$fis.tex"
 
+
 latex -interaction=nonstopmode $fis.tex > /dev/null
+set -e
 biber $fis
+set +e
 echo ""
 echo ""
 latex -interaction=nonstopmode $fis.tex > /dev/null
