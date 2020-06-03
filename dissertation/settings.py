@@ -93,6 +93,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
+        'TIMEOUT': 3600,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PARSER_CLASS": "redis.connection.HiredisParser",
@@ -149,7 +150,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 OBJECT_RECOGNITION_MODEL = env.str('OBJECT_RECOGNITION_MODEL', default='resnet50_coco_best_v2.0.1.h5')
-#OBJECT_RECOGNITION_MODEL = env.str('OBJECT_RECOGNITION_MODEL', default='yolo-tiny.h5')
 WORD2VEC_MODEL = env.str('WORD2VEC_MODEL', default='GoogleNews-vectors-negative300.bin')
 SHOW_DEBUG_IMAGES = env.bool('SHOW_DEBUG_IMAGES', default=False)
 
