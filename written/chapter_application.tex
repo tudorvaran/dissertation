@@ -1,7 +1,7 @@
 \chapter{Application: Website with recommender}
 \label{chap:app}
 
-This chapter is focused on the application related to the paper, which is a django website. Section \ref{sec:app_technology} categorises the different types of technologies used. Section \ref{sec:app_architecture} describes the stack of the application (i.e its components), while section \ref{sec:app_libraries} details the packages used. Finally sections \ref{sec:app_install} and \ref{sec:app_usage} are more oriented to the user of the application and show how it can be installed and managed.
+This chapter is focused on the application related to the paper, which is a Django website. Section \ref{sec:app_technology} categorises the different types of technologies used. Section \ref{sec:app_architecture} describes the stack of the application (i.e its components), while section \ref{sec:app_libraries} details the packages used. Finally, sections \ref{sec:app_install} and \ref{sec:app_usage} are more oriented to the user and instruct on how it can be installed and managed.
 
 \section{Technologies used}
 \label{sec:app_technology}
@@ -16,33 +16,33 @@ The application is developed in Python, so most technologies used are Python lib
 \section{Architecture}
 \label{sec:app_architecture}
 
-It is a website developed with the Django framework and using a Redis server. The Django server accepts http requests and returns images in the browser, while the caching server is used for storing the recommender tree. When a request which uses the recommender is sent, the django instance asks the Redis server for model data, loads it and performs the necessary queries.
+It is a website developed with the Django framework and it is using a Redis server. The Django server accepts HTTP requests and returns images in the browser, while the caching server is used for storing the recommender tree. When a request which uses the recommender is sent, the Django instance asks the Redis server for model data, loads it and performs the necessary queries.
 
 \subsection{Django}
 \label{subsec:app_architecture_django}
 
-Django is a python framework designed to ease the creation of websites. It is most widely used for backend, but it also contains support for frontend in the form of html templates. It contains its own url schema manager, allowing for easy configuration of path using regex.
+Django is a python framework designed to ease the creation of websites. It is most widely used for backend, but it also contains support for frontend in the form of HTML templates. It contains its own URL schema manager, allowing for easy configuration of path using regex.
 
-Most importantly, it contains its own database manager in the form of models. The user creates a model class and through the use of migrations (which are detected on request), the sql schema of the underlying database is automatically changed without affecting the underlying data.
+Most importantly, it contains its own database manager in the form of models. The user creates a model class and through the use of migrations (which are detected on request), the underlying SQL schema of the database is automatically changed without affecting its data.
 
-In the context of the application, it is used for managing pictures, storing what objects were detected and storing the vectors of each project. Five models are defined:
+In the context of the application, it is used for managing pictures, storing what objects were detected in them and each mapping. Five models are defined:
 
 \begin{enumerate}
 \item{Photo: keeps the name of the file;}
 \item{ObjectCategory: an object category which might have instances in several pictures (ex. person, table, chair)}
-\item{PhotoEnvironment: the set of keywords used for the hyperdimensional mapping. Contains a keyword and a display name for it;}
+\item{PhotoEnvironment: the set of keywords used for the hyperdimensional mapping. Contains a keyword and a displayed name for it;}
 \item{Photo2ObjectCategory: a many-to-many relationship table which tells what object was identified in which picture;}
-\item{EnvironmentMembership: a many-to-many relationship table which tells the value of mapped photo in a dimension with a certain label.}
+\item{EnvironmentMembership: a many-to-many relationship table which contains the value of a mapped photo in a dimension with a certain label.}
 \end{enumerate}
 
-These models are used to store these expensive results, Photo2ObjectCategory being the most expensive one. One picture takes roughly 2 seconds for processing and simply storing the results instead of recomputing them is a huge time saver.
+These models are used to store these expensive (time-wise) results, Photo2ObjectCategory being the most expensive one. One picture takes roughly 2 seconds for processing and simply storing the detections instead of recomputing them is a huge time saver.
 
 \subsection{Redis}
 \label{subsec:app_architecture_redis}
 
-Since the recommender tree is the same for all users performing requests (just like all the pictures), this could have been saved in the database. However, querying a whole table at query time is very slow, caching the tree is a better solution. 
+Since the recommender tree is the same for all users performing requests (just like all the pictures), this could have been saved in the database. However, querying a whole table at query time is very slow and caching the tree is a better solution. 
 
-The tree is stored in the cache for a few minutes, then it needs to be recomputed and re-stored. The building process takes about one minute and it is mostly due to database fetching. After that, any query performed on a cached tree happens instantaneously.
+The tree is stored in the cache for a limited, then it needs to be recomputed and re-stored. The building process takes about one minute and it is mostly due to database fetching. After that, any query performed on a cached tree happens instantaneously.
 
 \section{Libraries}
 \label{sec:app_libraries}
@@ -63,7 +63,7 @@ Numpy is fast library which eases operations on vectors and matrices. It is used
 \subsection{Scikit}
 \label{subsec:app_libraries_scikit}
 
-Scikit contains various learning techniques pre-implemented, including K-d trees and Ball trees. Using it, a tree can be creating by only calling a constructor with a list of vectors (the points). Since it uses Cython (a C plugin on the python language), it is highly optimised for speed.
+Scikit contains various learning techniques pre-implemented, including K-d trees and Ball trees. A nearest neighbours tree can be creating by only calling a constructor with a list of vectors (the points). Since it uses Cython (a C plugin on the Python language), it is highly optimised for speed.
 
 Querying is just as simple as creating the tree. The library has implemented the most efficient way for querying multiple vectors from a ball tree, using the method presented in section \ref{subsec:cluster_knn_balltree}.
 
@@ -88,14 +88,14 @@ This section focuses on the installation and configuration of the application. I
 
 \begin{itemize}
 \item{External installations: Redis caching server}
-\item{Package installation: python libraries}
+\item{Package installation: Python libraries}
 \item{Django configuration: settings and linking modules together}
 \end{itemize}
 
 \subsection{Redis}
 \label{subsec:app_install_redis}
 
-Depending on the operation system, the installation can be performed in the terminal. Assuming it is run on unix variant, the following commands should work for Linux distributions and MacOS:
+Depending on the operation system, the installation can be performed in the terminal. Assuming it is run on a unix variant, the following commands should work for Linux distributions and MacOS:
 
 \begin{lstlisting}[language=Bash]
 wget http://download.redis.io/redis-stable.tar.gz
@@ -109,7 +109,7 @@ cd src/redis-server
 \subsection{Requirements}
 \label{subsec:app_install_requirements}
 
-For installing python packages, the currently best tool is pip. The project comes with a $requirements.txt$ file which contains all the necessary packages and their respective versions. After installing Python 3.7 and Pip, simply running the following command in the project root will make sure that everything is running:
+For installing Python packages, the currently best tool is pip. The project comes with a $requirements.txt$ file which contains all the necessary packages and their respective versions. After installing Python 3.7 and Pip, simply running the following command in the project root will make sure that everything is ready:
 
 \begin{lstlisting}[language=Bash]
 pip install -r requirements.txt
@@ -118,12 +118,12 @@ pip install -r requirements.txt
 \subsection{Settings configuration and migration}
 \label{subsec:app_install_database}
 
-Django comes with a settings file, where the database, caching server and other environment variables are stored. This file is located in the dissertation folder from the project root. To configure the database, identify the $default$ key under the $DATABASES$ variable. Depending on the desired database server, this can vary. However, for fast experimenting, the best module is sqlite, which will create a database file on the disk, without requiring any third-party installations.
+Django comes with a settings file, where the database, caching server and other environment variables are configured. This file is located in the dissertation folder from the project root. To configure the database, identify the $default$ key under the $DATABASES$ variable. Depending on the desired database server, this can vary. However, for fast experimenting, the best module is sqlite, which will create a database file on the disk, without requiring any third-party installations.
 
 \begin{lstlisting}[language=Python]
-DATABASES = \{
-default: dj_database_url.config(default="sqlite:///db.sqlite3")
-\}
+DATABASES = dict(
+  default=dj_database_url.config(default="sqlite:///db.sqlite3")
+)
 \end{lstlisting}
 
 After configuring the database, the models need to be migrated into it first, then the application can be run.
@@ -133,12 +133,12 @@ python manage.py migrate
 ./run.sh
 \end{lstlisting}
 
-Besides the configuration of django modules, the file contains application-specific environment variables, which can be set in the command line using the $export$ command. They are located close to the bottom of the file and configuring these should change the behaviour of the application.
+Besides the configuration of Django modules, the file contains application-specific environment variables, which can be set in the command line using the $export$ command before starting the server. They are located close to the bottom of the file and configuring them should change the behaviour of the application.
 
 \subsection{Models}
 \label{subsec:app_install_models}
 
-After the steps performed in section \ref{subsec:app_install_database}, the application should be up and running, but it contains no pictures or models. This setup lets the user to freely choose their dataset of pictures, word2vec model and object recognition model, but it is recommended to use resnet50 \cite{image-ai}, google news word2vec model \cite{word2vec-datasets} and a coco dataset \cite{coco}. The images from the dataset go in the "photos\_input" directory and have to be processed first using the following set of commands:
+After the steps performed in section \ref{subsec:app_install_database}, the application should be up and running, but it contains no pictures or models. This setup lets the user to freely choose their dataset of pictures, word2vec model and object recognition model, but it is recommended to use resnet50 \cite{image-ai}, Google News word2vec model \cite{word2vec-datasets} and a coco dataset \cite{coco}. The images from the dataset go in the "photos\_input" directory and have to be processed first using the following set of commands:
 
 \begin{lstlisting}[language=Bash]
 python identify_objects.py 
@@ -151,9 +151,9 @@ python compute_membership.py
 \section{Usage}
 \label{sec:app_usage}
 
-The application is available on localhost:12020. By accessing it, the user is presented with 30 random pictures (configurable from the settings) and a menu. The menu allows the user to refresh the page or go to the admin interface, where it can view all the information. Figure \ref{fig:homepage}shows a screenshot of the home page.
+The application is available on localhost:12020. By accessing it, the user is presented with 30 random pictures (configurable from the settings) and a menu. The menu allows the user to refresh the page or go to the admin interface, where it can view all the information. Figure \ref{fig:homepage} shows a screenshot of the home page.
 
-Clicking on any picture will send the user to the picture's page where it would show the picture followed by the objects identified in it, its mapping and the recommendations (figure \ref{fig:recommendations}).
+Clicking on any picture will send the user to the picture's page where it would show the picture, followed by the objects identified in it, its mapping and the recommendations (figure \ref{fig:recommendations}).
 
 \begin{figure}[b!]
 \centering
@@ -169,11 +169,11 @@ Clicking on any picture will send the user to the picture's page where it would 
 \label{fig:recommendations}
 \end{figure}
 
-Besides the application in itself, the project has a few backend scripts, which perform different things, which can be run using the "python" command. For example:
+Besides the application itself, the project has a few backend scripts, which perform different things, and are run using the "python" command. For example:
 
 \begin{itemize}
-\item{build\_tree.py: rebuilds the tree and stores it in the cache}
-\item{evaluate.py: compares the current model with the object annotations from the dataset (requires a annotation json file from coco dataset}
+\item{build\_tree.py: rebuilds the tree and stores it in cache}
+\item{evaluate.py: compares the current model with the object annotations from the dataset (requires a annotation json file from coco dataset)}
 \item{evaluate\_dimensions.py: performs the experiment described in section \ref{sec:results_dimensions}}
 \item{make\_dimension\_graphs.py: creates figures \ref{fig:dims} and \ref{fig:dims_map} from the results of the previous script}
 \end{itemize}
