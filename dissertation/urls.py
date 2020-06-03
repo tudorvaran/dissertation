@@ -21,7 +21,6 @@ import testing
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('testing/', include('testing.urls')),
     path('photos/', include('photos_ml.urls')),
     path('', RedirectView.as_view(url="/photos/"))
 ]

@@ -1,88 +1,217 @@
 \chapter{Application: Website with recommender}
 \label{chap:app}
 
-This section will focus on describing the application
-
-\section{Architecture}
-\label{sec:app_architecture}
-
-Application, website
+This chapter is focused on the application related to the paper, which is a Django website. Section \ref{sec:app_technology} categorises the different types of technologies used. Section \ref{sec:app_architecture} describes the stack of the application (i.e its components), while section \ref{sec:app_libraries} details the packages used. Finally, sections \ref{sec:app_install} and \ref{sec:app_usage} are more oriented to the user and instruct on how it can be installed and managed.
 
 \section{Technologies used}
 \label{sec:app_technology}
 
-Technologies used
+The application is developed in Python, so most technologies used are Python libraries. They can be divided in two categories:
+
+\begin{enumerate}
+\item{Web framewords: responsible for delivery of content (section \ref{sec:app_architecture}). This includes Django and Redis;}
+\item{Math libraries: responsible for tasks related to model building, mapping, queries (section \ref{sec:app_libraries}).}
+\end{enumerate}
+
+\section{Architecture}
+\label{sec:app_architecture}
+
+It is a website developed with the Django framework and it is using a Redis server. The Django server accepts HTTP requests and returns images in the browser, while the caching server is used for storing the recommender tree. When a request which uses the recommender is sent, the Django instance asks the Redis server for model data, loads it and performs the necessary queries.
 
 \subsection{Django}
-\label{subsec:app_technology_django}
+\label{subsec:app_architecture_django}
 
-For creating the website, what this package contains etc.
+Django is a python framework designed to ease the creation of websites. It is most widely used for backend, but it also contains support for frontend in the form of HTML templates. It contains its own URL schema manager, allowing for easy configuration of path using regex.
+
+Most importantly, it contains its own database manager in the form of models. The user creates a model class and through the use of migrations (which are detected on request), the underlying SQL schema of the database is automatically changed without affecting its data.
+
+In the context of the application, it is used for managing pictures, storing what objects were detected in them and each mapping. Five models are defined:
+
+\begin{enumerate}
+\item{Photo: keeps the name of the file;}
+\item{ObjectCategory: an object category which might have instances in several pictures (ex. person, table, chair)}
+\item{PhotoEnvironment: the set of keywords used for the hyperdimensional mapping. Contains a keyword and a displayed name for it;}
+\item{Photo2ObjectCategory: a many-to-many relationship table which tells what object was identified in which picture;}
+\item{EnvironmentMembership: a many-to-many relationship table which contains the value of a mapped photo in a dimension with a certain label.}
+\end{enumerate}
+
+These models are used to store these expensive (time-wise) results, Photo2ObjectCategory being the most expensive one. One picture takes roughly 2 seconds for processing and simply storing the detections instead of recomputing them is a huge time saver.
 
 \subsection{Redis}
-\label{subsec:app_technology_redis}
+\label{subsec:app_architecture_redis}
 
-Redis is used for caching and storing the tree.
+Since the recommender tree is the same for all users performing requests (just like all the pictures), this could have been saved in the database. However, querying a whole table at query time is very slow and caching the tree is a better solution. 
+
+The tree is stored in the cache for a limited, then it needs to be recomputed and re-stored. The building process takes about one minute and it is mostly due to database fetching. After that, any query performed on a cached tree happens instantaneously.
+
+\section{Libraries}
+\label{sec:app_libraries}
+
+To avoid reinventing the wheel and re-implementing the same thing multiple times, but slower, these libraries ease some processes related to mapping and querying. Out of the libraries used, numpy is the only one which does not have anything related to storing models.
 
 \subsection{Numpy}
-\label{subsec:app_technology_numpy}
+\label{subsec:app_libraries_numpy}
 
-Numpy is used for math stuff and also required by other packages
+Numpy is fast library which eases operations on vectors and matrices. It is used for three reasons:
+
+\begin{itemize}
+\item{Mathematical functions: such as average, weighted average;}
+\item{Slicing: it offers the possibility for easily selecting certain parts of the vector/matrix;}
+\item{Compatibility: other model libraries have it as a dependency.}
+\end{itemize}
 
 \subsection{Scikit}
-\label{subsec:app_technology_scikit}
+\label{subsec:app_libraries_scikit}
 
-Scikit is used for auto-creation of the trees
+Scikit contains various learning techniques pre-implemented, including K-d trees and Ball trees. A nearest neighbours tree can be creating by only calling a constructor with a list of vectors (the points). Since it uses Cython (a C plugin on the Python language), it is highly optimised for speed.
+
+Querying is just as simple as creating the tree. The library has implemented the most efficient way for querying multiple vectors from a ball tree, using the method presented in section \ref{subsec:cluster_knn_balltree}.
 
 \subsection{Gensim and google model}
-\label{subsec:app_technology_gensim}
+\label{subsec:app_libraries_gensim}
 
-Gensim is used for word2vec and I also used a pre-trained model from Google News
+Gensim is a library which contains a variety of NLP related models. In this application, it contains an implementation of word2vec called $KeyedVectors$. It is a trainable and shareable model.
+
+The main advantage of this library is that $KeyedVectors$ is its compatibility with most pre-trained models. For example, the best existent word2vec model, the Google News based one, is stored in formats which are compatible with gensim.
 
 \subsection{ImageAI and Resnet model}
-\label{subsec:app_technology_imageai}
+\label{subsec:app_libraries_imageai}
 
-Image AI is used for object detection and I also used a pre-trained model resnet-coco
+ImageAI is a state-of-the-art python library for recognition and detection which can be used with very few lines of code. It offers support for image and video recognition. 
+
+Besides its own API, it allows for local training and validation. The residual neural network (resnet) model is compatible with this library and allows for fast experimentation, although recognition typically takes about 2 seconds for a picture.
 
 \section{Installation}
 \label{sec:app_install}
 
-How to install and use the application. Concept of Django settings and environment variables.
+This section focuses on the installation and configuration of the application. It focuses on the following aspects:
+
+\begin{itemize}
+\item{External installations: Redis caching server}
+\item{Package installation: Python libraries}
+\item{Django configuration: settings and linking modules together}
+\end{itemize}
 
 \subsection{Redis}
 \label{subsec:app_install_redis}
 
-Install Redis first
+Depending on the operation system, the installation can be performed in the terminal. Assuming it is run on a unix variant, the following commands should work for Linux distributions and MacOS:
+
+\begin{lstlisting}[language=Bash]
+wget http://download.redis.io/redis-stable.tar.gz
+tar xvzf redis-stable.tar.gz
+cd redis-stable
+make
+cd src/redis-server
+./redis-server
+\end{lstlisting}
 
 \subsection{Requirements}
 \label{subsec:app_install_requirements}
 
-Install requirements.txt file
+For installing Python packages, the currently best tool is pip. The project comes with a $requirements.txt$ file which contains all the necessary packages and their respective versions. After installing Python 3.7 and Pip, simply running the following command in the project root will make sure that everything is ready:
 
-\subsection{Database configuration and migration}
+\begin{lstlisting}[language=Bash]
+pip install -r requirements.txt
+\end{lstlisting}
+
+\subsection{Settings configuration and migration}
 \label{subsec:app_install_database}
 
-Configure a database or create the default ones
+Django comes with a settings file, where the database, caching server and other environment variables are configured. This file is located in the dissertation folder from the project root. To configure the database, identify the $default$ key under the $DATABASES$ variable. Depending on the desired database server, this can vary. However, for fast experimenting, the best module is sqlite, which will create a database file on the disk, without requiring any third-party installations.
+
+\begin{lstlisting}[language=Python]
+DATABASES = dict(
+  default=dj_database_url.config(default="sqlite:///db.sqlite3")
+)
+\end{lstlisting}
+
+After configuring the database, the models need to be migrated into it first, then the application can be run.
+
+\begin{lstlisting}[language=Bash]
+python manage.py migrate
+./run.sh
+\end{lstlisting}
+
+Besides the configuration of Django modules, the file contains application-specific environment variables, which can be set in the command line using the $export$ command before starting the server. They are located close to the bottom of the file and configuring them should change the behaviour of the application.
 
 \subsection{Models}
-\label{subsection:app_install_models}
+\label{subsec:app_install_models}
 
-Download some models for word2vec and object detection from the internet or use the provided ones. Specifications for this.
+After the steps performed in section \ref{subsec:app_install_database}, the application should be up and running, but it contains no pictures or models. This setup lets the user to freely choose their dataset of pictures, word2vec model and object recognition model, but it is recommended to use resnet50 \cite{image-ai}, Google News word2vec model \cite{word2vec-datasets} and a coco dataset \cite{coco}. The images from the dataset go in the "photos\_input" directory and have to be processed first using the following set of commands:
+
+\begin{lstlisting}[language=Bash]
+python identify_objects.py 
+# identifies and saves objects recognized in pictures
+python compute_membership.py 
+# based on objects recognized, finalizes the mapping 
+# process and saves the result in the database
+\end{lstlisting}
 
 \section{Usage}
-\label{section:app_usage}
+\label{sec:app_usage}
 
-How to use the website in general
+The application is available on localhost:12020. By accessing it, the user is presented with 30 random pictures (configurable from the settings) and a menu. The menu allows the user to refresh the page or go to the admin interface, where it can view all the information. Figure \ref{fig:homepage} shows a screenshot of the home page.
+
+Clicking on any picture will send the user to the picture's page where it would show the picture, followed by the objects identified in it, its mapping and the recommendations (figure \ref{fig:recommendations}).
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.98\textwidth]{homepage}
+\caption{The homepage of the application}
+\label{fig:homepage}
+\end{figure}
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.98\textwidth]{recommendations}
+\caption{The page for a single pictures. The recommendations are available at the bottom of the page}
+\label{fig:recommendations}
+\end{figure}
+
+Besides the application itself, the project has a few backend scripts, which perform different things, and are run using the "python" command. For example:
+
+\begin{itemize}
+\item{build\_tree.py: rebuilds the tree and stores it in cache}
+\item{evaluate.py: compares the current model with the object annotations from the dataset (requires a annotation json file from coco dataset)}
+\item{evaluate\_dimensions.py: performs the experiment described in section \ref{sec:results_dimensions}}
+\item{make\_dimension\_graphs.py: creates figures \ref{fig:dims} and \ref{fig:dims_map} from the results of the previous script}
+\end{itemize}
 
 \subsection{Admin interface}
-\label{section:app_usage_admin}
+\label{subsec:app_usage_admin}
 
-Tell the user how to create superuser
+To get access to the interface, run the following command and follow the steps:
+
+\begin{lstlisting}[language=Bash]
+python manage.py createsuperuser
+\end{lstlisting}
+
+By logging in, the user is presented to a list of entities to edit, as seen in figure \ref{fig:admin}. The entities under menu "photos\_ml" are the models described in section \ref{subsec:app_architecture_django}. Clicking any of them will display a list of available entities (figure \ref{fig:entities}) and clicking again will allow manual editing.
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.98\textwidth]{admin}
+\caption{The admin interface}
+\label{fig:admin}
+\end{figure}
+
+\begin{figure}[b!]
+\centering
+\includegraphics[width=0.98\textwidth]{entities}
+\caption{The list view of the photo entity}
+\label{fig:entities}
+\end{figure}
+
+The most important entity is "\textit{object environments}". These are the set of keywords (labels for each dimension). The admin user should create a few before running the compute\_membership.py script.
 
 \subsection{Custom querying}
-\label{section:app_usage_querying}
+\label{subsec:app_usage_querying}
 
-Perform special queries.
+The default number of recommendations for an images is 30. This can be tweaked from the settings file or can be specified in the url as an optional parameter. The list of parameters available is:
 
-
-
+\begin{itemize}
+\item{id: the picture id, which can be found in the admin interface}
+\item{k: the number of recommendations for a picture, which should not be larger than the dataset}
+\end{itemize}
 
