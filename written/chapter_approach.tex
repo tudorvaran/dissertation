@@ -6,11 +6,29 @@ This chapter focuses on defining the problem and presenting a formalised approac
 \section{Problem modelling}
 \label{sec:approach_modelling}
 
-Recommender systems rely on recommending similar content based on some traits of the items. When recommending photographs, there is the problem of how will that be represented in a hyperplane. A naive solution relies on having individual pixel as a separate dimension. However, this solution is problematic for multiple reasons. High number of dimensions increase the complexity and two pictures may have a different amount of pixels. Obviously, relying on raw data for recommendations is not a good option.
+Recommender systems rely on suggesting similar content based on some traits of the items. When recommending photographs, there is the problem of how will that be represented in a hyperplane. A naive solution relies on having individual pixel as a separate dimension. However, this solution is problematic for multiple reasons. High number of dimensions increase the complexity and two pictures may have a different amount of pixels. Obviously, relying on raw data for recommendations is not a good option.
 
 When looking at pictures, people tend to identify objects and other people in order to give photos meaning. These are the most important aspects in pictures for us, humans, not endless, meaningless pixels. 
 
 The question then becomes: how can photographs be modelled into points of a hyperplane in such a way that a recommender system which looks at its neighbours will find others with similar ones with similar objects? 
+
+\subsection{Motivation}
+\label{subsec:approach_motivation}
+
+Recommender systems are used everywhere on shopping platforms and have been effective in growing sales. Their major advantage is bridging the gap between supply and demand. The user inputs their demand and a profile based on that is constructed in the background. Based on the collected information, a recommender system should now be capable to offer relevant supply back to the user.
+
+When browsing the Internet, people tend to look for similar content, which is why recommender systems are viable. This applies to all types of content: music, text, videos, pictures etc. Users want to access content that is similar to what they want or, at best, be exactly what they want (but that does not always happen).
+
+Nowadays, pictures have become a very important pillar of content on the Internet. They are easily "\textit{digestible}", offer quick information and are used in a lot of contexts.
+
+The main motivation behind this project is helping users getting the content they want. When searching, they do not always land on the preferred content and tend to make slight adjustments. This is where a recommender system helps.
+
+\subsection{Related work}
+\label{subsec:approach_related}
+
+Google Photos is a cloud-based storage platform which stores images. With an account, a user can synchronise the pictures on their phone with their cloud system. Once uploaded on the cloud, they offer object and face detection services on them for easy searching. 
+
+Pinterest is an online website which aims to provide easily searchable images from articles and even standalone ones. It offers its own information retrieval search engine based on titles and labels of images.
 
 \section{General view}
 \label{sec:approach_general}
